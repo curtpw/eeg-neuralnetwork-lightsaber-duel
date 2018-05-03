@@ -137,13 +137,13 @@ $(document).ready(function() {
         var ryJoystickElement =    document.getElementsByClassName('joystick-ry-data')[0];
         var rzJoystickElement =    document.getElementsByClassName('joystick-rz-data')[0];
 
-        xJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[0] * 3) ).toFixed(2);
-        yJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[1] * 3) ).toFixed(2);
-        zJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[2] * 3) ).toFixed(2);
+        xJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[0] * 5) ).toFixed(2);
+        yJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[1] * 5) ).toFixed(2);
+        zJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[2] * 5) ).toFixed(2);
 
-        rxJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[3] * 3) ).toFixed(2);
-        ryJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[4] * 3) ).toFixed(2);
-        rzJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[5] * 3) ).toFixed(2);
+        rxJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[3] * 5) ).toFixed(2);
+        ryJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[4] * 5) ).toFixed(2);
+        rzJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[5] * 5) ).toFixed(2);
     }
 
     function updateSampleCountDisplay() {
