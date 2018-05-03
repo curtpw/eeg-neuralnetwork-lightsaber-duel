@@ -46,39 +46,9 @@ function StandardGamepadVisualizer(pad) {
         }
     }
 
- /*   this.buttonMap = [
-      { buttonIndex: 0,  elemIdTemplate: "gp[#]BtnA" },
-      { buttonIndex: 1,  elemIdTemplate: "gp[#]BtnB" },
-      { buttonIndex: 2,  elemIdTemplate: "gp[#]BtnX" },
-      { buttonIndex: 3,  elemIdTemplate: "gp[#]BtnY" },
-      { buttonIndex: 4,  elemIdTemplate: "gp[#]BtnLB" },
-      { buttonIndex: 5,  elemIdTemplate: "gp[#]BtnRB" },
-      { buttonIndex: 8,  elemIdTemplate: "gp[#]BtnSelect" },
-      { buttonIndex: 9,  elemIdTemplate: "gp[#]BtnStart" },
-      { buttonIndex: 10, elemIdTemplate: "gp[#]BtnLThumb" },
-      { buttonIndex: 11, elemIdTemplate: "gp[#]BtnRThumb" },
-      { buttonIndex: 12, elemIdTemplate: "gp[#]BtnDU" },
-      { buttonIndex: 13, elemIdTemplate: "gp[#]BtnDD" },
-      { buttonIndex: 14, elemIdTemplate: "gp[#]BtnDL" },
-      { buttonIndex: 15, elemIdTemplate: "gp[#]BtnDR" }
-    ]; */
-
- /*   this.UpdateButtons = function StandardGamepadVisualizer_UpdateButtons(pad) {
-        for (var i = 0; i < this.buttonMap.length; i++) {
-            var visualizer = this.buttonMap[i].visualizer;
-            if (this.buttonMap[i].buttonIndex < pad.buttons.length) {
-                var index = this.buttonMap[i].buttonIndex;
-                var button = pad.buttons[index];
-                visualizer.setValue(button.value, button.pressed);
-            }
-        }
-    } */
 
     this.Init = function _Init() {
-  /*      for (var i = 0; i < this.buttonMap.length; i++) {
-            var elemId = this.buttonMap[i].elemIdTemplate.replace(/\[#\]/g, this.index);
-            this.buttonMap[i].visualizer = new DigitalButtonVisualizer(elemId);
-        } */
+
     }
     this.Init();
 }
@@ -97,15 +67,6 @@ function GenericGamepadVisualizer(pad) {
         var containerElem = document.getElementById(this.containerElemId);
         var strInject = "";
 
-     /*   var buttonTemplateStr = '<div id="gp[#]" class="AnalogButtonVisualizer VisualizerGeneric" style="">[BTN#]<div id="val"></div></div>';
-        for (var index = 0; index < pad.buttons.length; index++) {
-            var elemId = "gp" + this.index + "Btn" + index;
-            var buttonStr = buttonTemplateStr.replace(/gp\[#\]/g, elemId);
-            buttonStr = buttonStr.replace(/\[BTN#\]/g, "B" + index);
-            strInject += buttonStr;
-        }
-        strInject += "<br>"; */
-
         var axisTemplateStr = '<div id="gp[#]" class="AxisVisualizer VisualizerGeneric"><div id="val"></div></div>';
         for (var index = 0; index < pad.axes.length; index += 2) {
 
@@ -118,7 +79,6 @@ function GenericGamepadVisualizer(pad) {
                 strInject += axisStr;
 
             }
-
         }
 
         containerElem.innerHTML = strInject;
@@ -141,30 +101,28 @@ function GenericGamepadVisualizer(pad) {
 *****************************************************************************************/
     
     var gamepadID = pad.id;
-    if( gamepadID.indexOf('Arduino') >= 0){
+    console.log("GAMEPAD ID:" + gamepadID);
+
+    if( gamepadID.indexOf('SparkFun') >= 0){
         xJoystick = (pad.axes[0] + 1) / 2;
         yJoystick = (pad.axes[1] + 1) / 2;
-        distanceSensor = (pad.axes[2] + 1) / 2;
+        zJoystick = (pad.axes[2] + 1) / 2;
 
-        //TRY OUT CHART VAR FROM WEB BLUETOOTH
-           //     var rawAccXChart = ((sensorDataArray[0] + 2) / 4);
-           //     var rawAccYChart = ((sensorDataArray[1] + 2) / 4);
-          //      var rawAccZChart = ((sensorDataArray[2] + 2) / 4);
-
-          //      var rawPitchChart = (sensorDataArray[5] / 400);
-           //     var rawRollChart = (sensorDataArray[6] / 400);
+        console.log("xJoystick: " + xJoystick);
 
 
-                //sensor values in bottom 2/3 of chart , 1/10 height each
-                rawAccXChart = xJoystick;
-                rawAccYChart = xJoystick;
-                rawAccZChart = distanceSensor;
 
-                var timeStamp = new Date().getTime();
 
-                                lineAccX.append(timeStamp, rawAccXChart);
-                lineAccY.append(timeStamp, rawAccYChart);
-                lineAccZ.append(timeStamp, rawAccZChart);
+        //sensor values in bottom 2/3 of chart , 1/10 height each
+      /*  rawAccXChart = xJoystick;
+        rawAccYChart = yJoystick;
+        rawAccZChart = zJoystick;
+
+        var timeStamp = new Date().getTime();
+
+        lineAccX.append(timeStamp, rawAccXChart);
+        lineAccY.append(timeStamp, rawAccYChart);
+        lineAccZ.append(timeStamp, rawAccZChart); */
     }
 
 
@@ -173,11 +131,9 @@ function GenericGamepadVisualizer(pad) {
     //INJECT INTO MAIN APP
     $(".gamepad-val-display.xjoystick").html("X Joystick: <span>" + xJoystick + "</span");
     $(".gamepad-val-display.yjoystick").html("Y Joystick: <span>" + yJoystick + "</span");
-    $(".gamepad-val-display.distance").html("Distance: <span>" + distanceSensor + "</span");
+    $(".gamepad-val-display.distance").html("Z Joystick: <span>" + zJoystick + "</span");
+
  //   pad.axes[3] = 0; pad.axes[4] = 0;//put distance in the center of the little axis viz
-
-
-
 
                 for (var index = 0; index < pad.axes.length; index += 2) {
 
@@ -190,10 +146,7 @@ function GenericGamepadVisualizer(pad) {
                         if (pad.axes[index + 1]) {
                             visualizer.setYAxisValue(pad.axes[index + 1]);
                         }
-
                     }
-
-
                 }
 
                 UpdateGamepadStateTable(pad, pad.index);

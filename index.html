@@ -186,8 +186,8 @@
         var image  = document.getElementById("loading_animation");
 
         if (canvas) {
-      //    canvas.width  = window.innerWidth  * 0.6;
-          canvas.width  = window.innerWidth  * 0.97;
+          canvas.width  = window.innerWidth  * 0.6;
+      //    canvas.width  = window.innerWidth  * 0.97;
           canvas.height = window.innerHeight * 0.97;
           $("#webgl_canvas").show();
         }
@@ -210,8 +210,8 @@
         var image  = document.getElementById("loading_animation2");
 
         if (canvas) {
-      //    canvas.width  = window.innerWidth  * 0.6;
-          canvas.width  = window.innerWidth  * 0.97;
+          canvas.width  = window.innerWidth  * 0.6;
+       //   canvas.width  = window.innerWidth  * 0.97;
           canvas.height = window.innerHeight * 0.97;
           $("#webgl_canvas2").show();
         }
@@ -464,7 +464,7 @@
     
         .sensor-data .data{
           color: white;
-          width: 80px;
+          width: 140px;
           display: inline-block;
           overflow: hidden;
           font-size: 12px;
@@ -501,12 +501,12 @@
             margin-right: 10px;
             margin-bottom: 10px;
             margin-top: 6px;
-            width: 85px;
+            width: 250px;
         }
         #activate-btn, #export-btn, #activate2-btn, #export2-btn{
           background-color: #6d6d6d;
           border-color: #6d6d6d;
-          width: 125px;
+          width: 150px;
         }
         #activate-btn.haveNN, #export-btn.haveNN, #activate2-btn.haveNN, #export2-btn.haveNN{
           background-color: green;
@@ -565,11 +565,11 @@
         .intro{
           margin-left: 0px;
           margin-bottom: 0px;
-          width: 400px;
+          width: 650px;
         }
     
         #nn-interface-container{
-        	width: 400px;
+        	width: 650px;
         	display: inline-block;
         }
     .circle-button {
@@ -629,7 +629,7 @@
       color: rgb(244, 66, 66);
     }
     .collect.btn{
-      width: 118px;
+      width: 350px;
       margin-left: 0px;
       margin-right: 6px;
     }
@@ -773,6 +773,21 @@
     .roll-key{ background-color: rgb(240, 240, 240); }
     .nn1-score-label{ color: rgb(72, 244, 68); font-weight: 600; }
     .nn2-score-label{ color: rgb(244, 66, 66); font-weight: 600; }
+
+    #saber-container1{
+      position: absolute;
+      right: 200px;
+      top: 22%;
+      width: 700px;
+      z-index: 0;
+    }
+    #saber-container2{
+      position: absolute;
+      right: -300px;
+      top: 22%;
+      width: 700px;
+      z-index: 0;
+    }
     </style>
 
 
@@ -787,11 +802,14 @@
     <div class="sensor-container">
         <!-- display raw numerical data -->
         <div class="sensor-data">
-            <div class="data"><span class="accelerometer-x-key key">&nbsp;&nbsp;&nbsp;</span>accX: <span class="accelerometer-x-data"></span></div>
-            <div class="data"><span class="accelerometer-y-key key">&nbsp;&nbsp;&nbsp;</span>accY: <span class="accelerometer-y-data"></span></div>
-            <div class="data"><span class="accelerometer-z-key key">&nbsp;&nbsp;&nbsp;</span>accZ: <span class="accelerometer-z-data"></span></div>
-            <div class="data"><span class="pitch-key key">&nbsp;&nbsp;&nbsp;</span>Pitch: <span class="accelerometer-pitch-data"></span></div>
-            <div class="data"><span class="roll-key key">&nbsp;&nbsp;&nbsp;</span>Roll: <span class="accelerometer-roll-data"></span></div>
+            <div class="data"><span class="accelerometer-x-key key">&nbsp;&nbsp;&nbsp;</span>Delta: <span class="joystick-x-data"></span></div>
+            <div class="data"><span class="accelerometer-y-key key">&nbsp;&nbsp;&nbsp;</span>Theta: <span class="joystick-y-data"></span></div>
+            <div class="data"><span class="accelerometer-z-key key">&nbsp;&nbsp;&nbsp;</span>LowAlpha: <span class="joystick-z-data"></span></div>
+            <div class="data"><span class="pitch-key key">&nbsp;&nbsp;&nbsp;</span>HighAlpha: <span class="accelerometer-pitch-data"></span></div>
+            <div class="data"><span class="roll-key key">&nbsp;&nbsp;&nbsp;</span>LowBeta: <span class="accelerometer-roll-data"></span></div>
+            <div class="data"><span class="roll-key key">&nbsp;&nbsp;&nbsp;</span>HighBeta: <span class="joystick--data"></span></div>
+            <div class="data"><span class="roll-key key">&nbsp;&nbsp;&nbsp;</span>LowGamma: <span class="joystick--data"></span></div>
+            <div class="data"><span class="roll-key key">&nbsp;&nbsp;&nbsp;</span>MidGamma: <span class="joystick--data"></span></div>
         </div>
 
         <!-- container for smoothie.js timeseries streaming data chart (canvas) -->
@@ -813,38 +831,27 @@
 
     <div id="basic-interface-container">
         <div class="intro">
-            <button id="connect" class="btn">
-	          Connect
-	        </button>
-
             <span id="message"></span>
 
-            <div class="range-slider sample-size-div">
-                <p class="range-label"># Samples</p>
-                <input class="range-slider__range sample-size" type="range" value="25" min="25" max="500" step="25">
-                <span class="range-slider__value">0</span>
-            </div>
             <!-- NN1 Add True  -->
-            <button id="collect-true-1" class="btn collect true collect-true-1">1Sample Concentration</button>
+            <button id="collect-true-1" class="btn collect true collect-true-1">Player 1: Sample Concentration</button>
             <!-- clear NN1 samples  -->
             <button id="clear-true-1" class="btn clear true clear-1">clear</button>
             <!-- NN1 Add False -->
-            <button id="collect-false-1" class="btn collect false collect-false-1">1Sample Meditation</button>
+            <button id="collect-false-1" class="btn collect false collect-false-1">Player 1: Sample Meditation</button>
             <!-- NN2 Add True -->
-            <button id="collect-true-2" class="btn collect true collect-true-2">2Sample Concentration</button>
+            <button id="collect-true-2" class="btn collect true collect-true-2">Player 2: Sample Concentration</button>
             <!-- clear NN2 samples  -->
             <button id="clear-true-2" class="btn clear true clear-2">clear</button>
             <!-- NN2 Add False -->
-            <button id="collect-false-2" class="btn collect false collect-false-2">2Sample Meditation</button>
+            <button id="collect-false-2" class="btn collect false collect-false-2">Player 2: Sample Meditation</button>
         </div>
 
         <div id="nn-interface-container" class="data-ui">
-            <button id="train-btn" class="btn">Train NN1</button>
-            <button id="export-btn" class="btn">Export NN1</button>
-            <button id="activate-btn" class="btn">Activate NN1</button>
-            <button id="train2-btn" class="btn">Train NN2</button>
-            <button id="export2-btn" class="btn">Export NN2</button>
-            <button id="activate2-btn" class="btn">Activate NN2</button>
+            <button id="train-btn" class="btn">Train Player 1 Neural Network</button>
+            <button id="activate-btn" class="btn">Activate Player 1</button>
+            <button id="train2-btn" class="btn">Train Player 2 Neural Network</button>
+            <button id="activate2-btn" class="btn">Activate Player 2</button>
         </div>
 
     </div>
@@ -860,12 +867,6 @@
         <span class="text-input-span">
   		    <input class="clean-slide g" id="error-input" type="text" value="0.06" placeholder=""><label for="error">Error</label>
   		</span>
-
-        <div class="range-slider nn-architecture-div nn-architecture">
-            <p class="range-label">Select Neural Network Architecture (LSTM Multilayer Perceptron)</p>
-            <input class="range-slider__range nn-architecture" type="range" value="5" min="0" max="8" step="1" increment="1">
-            <span class="range-slider__value nn-architecture">7:5:2:1</span>
-        </div>
     </div>
 
 
@@ -908,7 +909,7 @@
 
     <div id="saber-container1">
         <!--  <canvas id="webgl_canvas" width="640" height="480"></canvas> -->
-        <canvas id="webgl_canvas" width="480" height="640"></canvas>
+        <canvas id="webgl_canvas" width="640" height="640"></canvas>
         <div id="canvas_overlay">
             <img src="demos/lightsaber/textures/loading.gif" id="loading_animation">
         </div>
@@ -916,7 +917,7 @@
 
     <div id="saber-container2">
         <!--  <canvas id="webgl_canvas" width="640" height="480"></canvas> -->
-        <canvas id="webgl_canvas2" width="480" height="640"></canvas>
+        <canvas id="webgl_canvas2" width="640" height="640"></canvas>
         <div id="canvas_overlay2">
             <img src="demos/lightsaber/textures/loading.gif" id="loading_animation2">
         </div>
@@ -929,80 +930,4 @@
   <audio id="snd_saber_loop" src="demos/lightsaber/sounds/saber_loop.mp3" preload="auto" loop="loop"></audio>
 
 </body>
-
-<!-- Web Bluetooth connection -->
-<script>
-//var button = document.getElementById("connect");
-//var message = document.getElementById("message");
-/*
-$( document ).ready(function() {
-      console.log( "ready!" );
-
-      
-
-            var rangeSlider = function(){
-        var slider = $('.range-slider'),
-            range = $('.range-slider__range'),
-            value = $('.range-slider__value');
-          
-        slider.each(function(){
-
-          value.each(function(){
-            var value = $(this).prev().attr('value');
-            $(this).html(value);
-          });
-
-          if( $(this).hasClass('nn-architecture') ){ $('.range-slider__value.nn-architecture').html('7:5:2:1'); }
-
-          range.on('input', function(){
-            var labels = ['5:2:1', '5:5:1', '5:5:2:1', '5:5:5:1', '7:7:1', '7:5:2:1', '7:7:2:1', '7:7:7:1', '2:2:2:1'];
-            $(this).next(value).html(this.value);
-
-            if( $(this).hasClass('nn-architecture') ){ $(this).next(value).html( labels[this.value] ); }
-          
-          });
-        });
-      }
-
-      rangeSlider();
-
-      //RANGE SLIDER EVENT HANDLER
-      $( ".range-slider" ).each(function() {
-
-        if($(this).hasClass("nn-architecture")){
-          // Add labels to slider whose values 
-          // are specified by min, max and whose
-          // step is set to 1
-            
-          // Get the options for this slider
-          //var opt = $(this).data().uiSlider.options;
-          // Get the number of possible values
-          var $input = $(this).find("input");
-          var min = parseInt($input.attr("min"));
-          var max = parseInt($input.attr("max"));
-          var step = parseInt($input.attr("step"));
-          var increment = parseInt($input.attr("increment"));
-          var vals = max - min; //opt.max - opt.min;
-          //if(min < 0){ vals = max + min; }
-          var labels = ['5:2:1', '5:5:1', '5:5:2:1', '5:5:5:1', '7:7:1', '7:5:2:1', '7:7:2:1', '7:7:7:1', '2:2:2:1'];
-            
-          // Space out values
-          for (var i = 0; (i * increment) <= vals; i++) {
-              var s = min + (i * increment);
-              var el = $('<label>'+ labels[s] +'</label>').css('left',( 4 + Math.abs((s-min)/vals) *($input.width() -24)+'px'));
-           //   var el = $('<label>'+ s +'</label>').css('left',( 3 + ((s-min)/vals) *($input.width() -24)+'px'));
-           if(s == 0){ el = $('<label>'+ labels[s] +'</label>').css('left',( 21 + Math.abs((s-min)/vals) *($input.width() -24)+'px')); }
-           if(s == vals){ el = $('<label>'+ labels[s] +'</label>').css('left',( -20 + Math.abs((s-min)/vals) *($input.width() -24)+'px')); }
-              
-           
-           $(this).append(el);
-          }
-        }  
-      });
-
-
-  }); //end of on document load
-  */
-</script>
-
 </html>
