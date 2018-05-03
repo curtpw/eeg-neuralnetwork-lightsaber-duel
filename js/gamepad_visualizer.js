@@ -109,6 +109,10 @@ function GenericGamepadVisualizer(pad) {
         yJoystick = (pad.axes[1] + 1) / 2;
         zJoystick = (pad.axes[2] + 1) / 2;
 
+        rxJoystick = (pad.axes[3] + 1) / 2;
+        ryJoystick = (pad.axes[4] + 1) / 2;
+        rzJoystick = (pad.axes[5] + 1) / 2;
+
     //    console.log("xJoystick: " + xJoystick);
 
     }
@@ -119,7 +123,11 @@ function GenericGamepadVisualizer(pad) {
     //INJECT INTO MAIN APP
     $(".gamepad-val-display.xjoystick").html("X Joystick: <span>" + xJoystick + "</span");
     $(".gamepad-val-display.yjoystick").html("Y Joystick: <span>" + yJoystick + "</span");
-    $(".gamepad-val-display.distance").html("Z Joystick: <span>" + zJoystick + "</span");
+    $(".gamepad-val-display.zjoystick").html("Z Joystick: <span>" + zJoystick + "</span");
+
+        $(".gamepad-val-display.rxjoystick").html("rX Joystick: <span>" + rxJoystick + "</span");
+    $(".gamepad-val-display.ryjoystick").html("rY Joystick: <span>" + ryJoystick + "</span");
+    $(".gamepad-val-display.rzjoystick").html("rZ Joystick: <span>" + rzJoystick + "</span");
 
  //   pad.axes[3] = 0; pad.axes[4] = 0;//put distance in the center of the little axis viz
 

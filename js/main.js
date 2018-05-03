@@ -23,8 +23,8 @@ var NN2FalseDataArray = new Array;
 var NN1Architecture = 'none';
 var NN2Architecture = 'none';
 
-var NN1NumInputs = 5;
-var NN2NumInputs = 5;
+var NN1NumInputs = 6;
+var NN2NumInputs = 6;
 
 //master session data array of arrays
 var sensorDataSession = [];
@@ -55,15 +55,21 @@ var timeout = null;
 var xJoystick = 0;
 var yJoystick = 0;
 var zJoystick = 0;
+var rxJoystick = 0;
+var ryJoystick = 0;
+var rzJoystick = 0;
 
 var xJoystickOld = 0;
 var yJoystickOld = 0;
 var zJoystickOld = 0;
+var rxJoystickOld = 0;
+var ryJoystickOld = 0;
+var rzJoystickOld = 0;
 
 
 //Streaming time series chart var - smoothie.js
-var xJoystickLine, yJoystickLine, zJoystickLine, linePitch, lineRoll, lineNN1, lineNN2;
-var xJoystickChart, yJoystickChart, zJoystickChart, rawPitchChart, rawRollChart; 
+var xJoystickLine, yJoystickLine, zJoystickLine, rxJoystickLine, ryJoystickLine, rzJoystickLine, linePitch, lineRoll, lineNN1, lineNN2;
+var xJoystickChart, yJoystickChart, zJoystickChart, rxJoystickChart, ryJoystickChart, rzJoystickChart, rawPitchChart, rawRollChart; 
 //add smoothie.js time series streaming data chart
 var chartHeight = 100;
 var chartWidth = $(window).width();
@@ -83,16 +89,20 @@ $(document).ready(function() {
     xJoystickLine = new TimeSeries();
     yJoystickLine = new TimeSeries();
     zJoystickLine = new TimeSeries();
-    linePitch = new TimeSeries();
-    lineRoll = new TimeSeries();
+        rxJoystickLine = new TimeSeries();
+    ryJoystickLine = new TimeSeries();
+    rzJoystickLine = new TimeSeries();
+
     lineNN1 = new TimeSeries();
     lineNN2 = new TimeSeries();
 
     streamingChart.addTimeSeries(xJoystickLine,  {strokeStyle: 'rgb(185, 156, 107)', lineWidth: 3 });
     streamingChart.addTimeSeries(yJoystickLine,  {strokeStyle: 'rgb(143, 59, 27)',   lineWidth: 3 });
     streamingChart.addTimeSeries(zJoystickLine,  {strokeStyle: 'rgb(213, 117, 0)',   lineWidth: 3 });
-    streamingChart.addTimeSeries(linePitch, {strokeStyle: 'rgb(128, 128, 128)', lineWidth: 3 });
-    streamingChart.addTimeSeries(lineRoll,  {strokeStyle: 'rgb(240, 240, 240)', lineWidth: 3 });
+    streamingChart.addTimeSeries(rxJoystickLine, {strokeStyle: 'rgb(128, 128, 128)', lineWidth: 3 });
+    streamingChart.addTimeSeries(ryJoystickLine,  {strokeStyle: 'rgb(240, 240, 240)', lineWidth: 3 });
+    streamingChart.addTimeSeries(rzJoystickLine,  {strokeStyle: 'rgb(140, 240, 240)', lineWidth: 3 });
+
     streamingChart.addTimeSeries(lineNN1,   {strokeStyle: 'rgb(72, 244, 68)',   lineWidth: 4 });
     streamingChart.addTimeSeries(lineNN2,   {strokeStyle: 'rgb(244, 66, 66)',   lineWidth: 4 });
 
@@ -122,14 +132,18 @@ $(document).ready(function() {
         var xJoystickElement =    document.getElementsByClassName('joystick-x-data')[0];
         var yJoystickElement =    document.getElementsByClassName('joystick-y-data')[0];
         var zJoystickElement =    document.getElementsByClassName('joystick-z-data')[0];
-        var accelerometerPitchDiv = document.getElementsByClassName('accelerometer-pitch-data')[0];
-        var accelerometerRollDiv =  document.getElementsByClassName('accelerometer-roll-data')[0];
+
+        var rxJoystickElement =    document.getElementsByClassName('joystick-rx-data')[0];
+        var ryJoystickElement =    document.getElementsByClassName('joystick-ry-data')[0];
+        var rzJoystickElement =    document.getElementsByClassName('joystick-rz-data')[0];
 
         xJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[0] * 3) ).toFixed(2);
         yJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[1] * 3) ).toFixed(2);
         zJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[2] * 3) ).toFixed(2);
-        accelerometerPitchDiv.innerHTML =   sensorDataArray[5];
-        accelerometerRollDiv.innerHTML =    sensorDataArray[6];
+
+        rxJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[3] * 3) ).toFixed(2);
+        ryJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[4] * 3) ).toFixed(2);
+        rzJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[5] * 3) ).toFixed(2);
     }
 
     function updateSampleCountDisplay() {
@@ -158,13 +172,13 @@ $(document).ready(function() {
                 //load data into global array
                 sensorDataArray = new Array(12).fill(0);
 
-                sensorDataArray[0] = xJoystick.toFixed(2);
-                sensorDataArray[1] = yJoystick.toFixed(2);
-                sensorDataArray[2] = zJoystick.toFixed(2);
-                sensorDataArray[3] = xJoystick.toFixed(2);
-                sensorDataArray[4] = yJoystick.toFixed(2);
+                sensorDataArray[0] = xJoystick;
+                sensorDataArray[1] = yJoystick;
+                sensorDataArray[2] = zJoystick;
+                sensorDataArray[3] = rxJoystick;
+                sensorDataArray[4] = ryJoystick;
+                sensorDataArray[5] = rzJoystick;
 
-                sensorDataArray[5] = 0;
                 sensorDataArray[6] = 0;
                 sensorDataArray[7] = 0;
                 sensorDataArray[8] = 0;
@@ -178,8 +192,9 @@ $(document).ready(function() {
                 yJoystickChart = ((sensorDataArray[1] + 1) / 2);
                 zJoystickChart = ((sensorDataArray[2] + 1) / 2);
 
-                rawPitchChart = (sensorDataArray[5] / 400);
-                rawRollChart = (sensorDataArray[6] / 400);
+                rxJoystickChart = ((sensorDataArray[3] + 1) / 2);
+                ryJoystickChart = ((sensorDataArray[4] + 1) / 2);
+                rzJoystickChart = ((sensorDataArray[5] + 1) / 2);
 
 
                 //sensor values in bottom 2/3 of chart , 1/10 height each
@@ -187,13 +202,19 @@ $(document).ready(function() {
                 yJoystickChart = (yJoystickChart / 4.5) + 2.5 * 0.1;
                 zJoystickChart = (zJoystickChart / 4.5) + 2 * 0.1;
 
-                rawPitchChart = (rawPitchChart / 7) + 1.5 * 0.1;
-                rawRollChart = (rawRollChart / 7) + 1 * 0.1;
+                rxJoystickChart = (rxJoystickChart / 4.5) + 1.5 * 0.1;
+                ryJoystickChart = (ryJoystickChart / 4.5) + 1 * 0.1;
+                rzJoystickChart = (rzJoystickChart / 4.5) + 0.5 * 0.1;
 
 
                 xJoystickLine.append(timeStamp, xJoystickChart);
                 yJoystickLine.append(timeStamp, yJoystickChart);
                 zJoystickLine.append(timeStamp, zJoystickChart);
+
+                rxJoystickLine.append(timeStamp, rxJoystickChart);
+                ryJoystickLine.append(timeStamp, ryJoystickChart);
+                rzJoystickLine.append(timeStamp, rzJoystickChart);
+
              //   linePitch.append(timeStamp, rawPitchChart);
              //   lineRoll.append(timeStamp, rawRollChart);
 
@@ -202,6 +223,10 @@ $(document).ready(function() {
                     xJoystickOld = xJoystick;
                     yJoystickOld = yJoystick;
                     zJoystickOld = zJoystick;
+
+                    rxJoystickOld = rxJoystick;
+                    ryJoystickOld = ryJoystick;
+                    rzJoystickOld = rzJoystick;
 
                     //add new values to NN training data
                     if (getSamplesFlag > 0) {
@@ -242,8 +267,9 @@ $(document).ready(function() {
             sensorDataArray[0] = xJoystick.toFixed(2);
             sensorDataArray[1] = yJoystick.toFixed(2);
             sensorDataArray[2] = zJoystick.toFixed(2);
-            sensorDataArray[3] = xJoystick.toFixed(2);
-            sensorDataArray[4] = xJoystick.toFixed(2);
+            sensorDataArray[3] = rxJoystick.toFixed(2);
+            sensorDataArray[4] = ryJoystick.toFixed(2);
+            sensorDataArray[5] = rzJoystick.toFixed(2);
         }
     } 
 
@@ -295,7 +321,7 @@ $(document).ready(function() {
     var Network = synaptic.Network;
     var Trainer = synaptic.Trainer;
     var Architect = synaptic.Architect;
-    var neuralNet = new Architect.LSTM(3, 5, 5, 1);
+    var neuralNet = new Architect.LSTM(5, 5, 5, 1);
     var trainer = new Trainer(neuralNet);
     var trainingData;
 
@@ -305,7 +331,7 @@ $(document).ready(function() {
     var Network2 = synaptic.Network;
     var Trainer2 = synaptic.Trainer;
     var Architect2 = synaptic.Architect;
-    var neuralNet2 = new Architect2.LSTM(3, 5, 5, 1);
+    var neuralNet2 = new Architect2.LSTM(5, 5, 5, 1);
     var trainer2 = new Trainer2(neuralNet2);
     var trainingData2;
 
@@ -334,6 +360,9 @@ $(document).ready(function() {
             feedArray[0] = (sensorDataArray[0] + 2) / 4;
             feedArray[1] = (sensorDataArray[1] + 2) / 4;
             feedArray[2] = (sensorDataArray[2] + 2) / 4;
+            feedArray[3] = (sensorDataArray[3] + 2) / 4;
+            feedArray[4] = (sensorDataArray[4] + 2) / 4;
+            feedArray[5] = (sensorDataArray[5] + 2) / 4;
  //       }
 
         // use trained NN or loaded NN
@@ -429,7 +458,7 @@ $(document).ready(function() {
         } else if (rawNNArchitecture == '3:5:1') {
             getArchitect = new Architect.LSTM(3, 5, 1); 
         } else if (rawNNArchitecture == '3:5:5:1') { */
-            getArchitect = new Architect.LSTM(3, 5, 5, 1);
+            getArchitect = new Architect.LSTM(6, 5, 5, 1);
    /*     } else if (rawNNArchitecture == '5:1') {
             getArchitect = new Architect.LSTM(5, 1);
         } else if (rawNNArchitecture == '5:5:1') {
@@ -472,6 +501,10 @@ $(document).ready(function() {
                 inputArray[0] = (currentSample[0]);
                 inputArray[1] = (currentSample[1]);
                 inputArray[2] = (currentSample[2]);
+
+                inputArray[3] = (currentSample[3]);
+                inputArray[4] = (currentSample[4]);
+                inputArray[5] = (currentSample[5]);
 
         /*    } else if (numInputs == 2) {
                 inputArray[0] = currentSample[3] / 360;
