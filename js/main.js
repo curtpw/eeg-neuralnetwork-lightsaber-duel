@@ -357,12 +357,12 @@ $(document).ready(function() {
         }
 
         if ((selectNN == 1 && NN1NumInputs == 3) || (selectNN == 2 && NN2NumInputs == 3)) { */
-            feedArray[0] = (sensorDataArray[0] + 2) / 4;
-            feedArray[1] = (sensorDataArray[1] + 2) / 4;
-            feedArray[2] = (sensorDataArray[2] + 2) / 4;
-            feedArray[3] = (sensorDataArray[3] + 2) / 4;
-            feedArray[4] = (sensorDataArray[4] + 2) / 4;
-            feedArray[5] = (sensorDataArray[5] + 2) / 4;
+            feedArray[0] = sensorDataArray[0];
+            feedArray[1] = sensorDataArray[1];
+            feedArray[2] = sensorDataArray[2];
+            feedArray[3] = sensorDataArray[3];
+            feedArray[4] = sensorDataArray[4];
+            feedArray[5] = sensorDataArray[5];
  //       }
 
         // use trained NN or loaded NN
@@ -420,7 +420,7 @@ $(document).ready(function() {
      //   nnRate = $("#rate-input").val();
         nnRate = 0.6;
       //  nnIterations = $("#iterations-input").val();
-        nnIterations = 1500;
+        nnIterations = 5000;
       //  nnError = $("#error-input").val();
         nnError = 0.6;
 
@@ -580,10 +580,10 @@ $(document).ready(function() {
         $('#activate-btn').toggleClass("activatedNN");
 
         //if loaded NN, turn off
-        if (loadNNFlag) {
+     /*   if (loadNNFlag) {
             loadNNFlag = false;
             $('#load-nn-btn').toggleClass("activatedNN");
-        }
+        } */
     });
 
     $('#train2-btn').click(function() {
@@ -598,10 +598,10 @@ $(document).ready(function() {
         $('#activate2-btn').toggleClass("activatedNN");
 
         //if leaded NN, turn off
-        if (loadNNFlag) {
+     /*   if (loadNNFlag) {
             loadNNFlag = false;
             $('#load-nn-btn').toggleClass("activatedNN");
-        }
+        } */
     });
 
 

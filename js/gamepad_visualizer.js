@@ -113,6 +113,9 @@ function GenericGamepadVisualizer(pad) {
         ryJoystick = (pad.axes[4] + 1) / 2;
         rzJoystick = (pad.axes[5] + 1) / 2;
 
+
+
+
     //    console.log("xJoystick: " + xJoystick);
 
     }
