@@ -56,6 +56,10 @@ var xJoystick = 0;
 var yJoystick = 0;
 var zJoystick = 0;
 
+var xJoystickOld = 0;
+var yJoystickOld = 0;
+var zJoystickOld = 0;
+
 
 //Streaming time series chart var - smoothie.js
 var xJoystickLine, yJoystickLine, zJoystickLine, linePitch, lineRoll, lineNN1, lineNN2;
@@ -147,6 +151,8 @@ $(document).ready(function() {
 
 
 
+
+
                 timeStamp = new Date().getTime();
 
                 //load data into global array
@@ -165,22 +171,7 @@ $(document).ready(function() {
                 sensorDataArray[9] = 0;
                 sensorDataArray[10] = 0;
                 sensorDataArray[11] = timeStamp;
-                /*
 
-                sensorDataArray[0] = state.accelerometer.x.toFixed(2);
-                sensorDataArray[1] = state.accelerometer.y.toFixed(2);
-                sensorDataArray[2] = state.accelerometer.z.toFixed(2);
-                sensorDataArray[3] = state.accelerometer.pitch.toFixed(1);
-                sensorDataArray[4] = state.accelerometer.roll.toFixed(1);
-
-                sensorDataArray[5] = state.accelerometer.pitch.toFixed(1);
-                sensorDataArray[6] = state.accelerometer.roll.toFixed(1);
-                sensorDataArray[7] = 0;
-                sensorDataArray[8] = 0;
-                sensorDataArray[9] = 0;
-                sensorDataArray[10] = 0;
-                sensorDataArray[11] = timeStamp;
-*/
 
                 //update time series chart
                 xJoystickChart = ((sensorDataArray[0] + 1) / 2);
@@ -203,24 +194,38 @@ $(document).ready(function() {
                 xJoystickLine.append(timeStamp, xJoystickChart);
                 yJoystickLine.append(timeStamp, yJoystickChart);
                 zJoystickLine.append(timeStamp, zJoystickChart);
-                linePitch.append(timeStamp, rawPitchChart);
-                lineRoll.append(timeStamp, rawRollChart);
+             //   linePitch.append(timeStamp, rawPitchChart);
+             //   lineRoll.append(timeStamp, rawRollChart);
+
+                //have the values been updated?
+                if(xJoystick != xJoystickOld || yJoystick != yJoystickOld || zJoystick != zJoystickOld){
+                    xJoystickOld = xJoystick;
+                    yJoystickOld = yJoystick;
+                    zJoystickOld = zJoystick;
+
+                    //add new values to NN training data
+                    if (getSamplesFlag > 0) {
+                        collectData();
+                    } else if (trainNNFlag1 || trainNNFlag2) {
+                        //don't do anything
+                    }
+                }
 
 
                 //if data sample collection has been flagged
                 //  getSensorData();
-                if (getSamplesFlag > 0) {
+            /*    if (getSamplesFlag > 0) {
                     collectData();
                 } else if (trainNNFlag1 || trainNNFlag2) {
                     //don't do anything
-                } else {
+                } else { */
                     if (haveNNFlag1 && activeNNFlag1) { //we have a NN and we want to apply to current sensor data
                         getNNScore(1);
                     } 
                     if (haveNNFlag2 && activeNNFlag2) { //we have a NN and we want to apply to current sensor data
                         getNNScore(2);
                     } 
-                }
+           //     }
 
                 displayData();
 
@@ -334,15 +339,15 @@ $(document).ready(function() {
         // use trained NN or loaded NN
         if (haveNNFlag1 && activeNNFlag1 && selectNN == 1) {
             scoreArray = neuralNet.activate(feedArray);
-        } else if (loadNNFlag && selectNN == 1) {
+        } /*else if (loadNNFlag && selectNN == 1) {
             scoreArray = neuralNetwork1(feedArray);
-        }
+        }*/
 
         if (haveNNFlag2 && activeNNFlag2 && selectNN == 2) {
             scoreArray = neuralNet2.activate(feedArray);
-        } else if (loadNNFlag && selectNN == 2) {
+        } /* else if (loadNNFlag && selectNN == 2) {
             scoreArray = neuralNetwork2(feedArray);
-        }
+        } */
 
         displayScore = scoreArray[0].toFixed(4) * 100;
         displayScore = displayScore.toFixed(2);
@@ -378,11 +383,17 @@ $(document).ready(function() {
         trainingData = new Array;
 
         var rawNNArchitecture = $(".range-slider__value.nn-architecture").html();
-        var numInputs = parseInt(rawNNArchitecture.charAt(0));
 
-        nnRate = $("#rate-input").val();
-        nnIterations = $("#iterations-input").val();
-        nnError = $("#error-input").val();
+        /**************** SET NUMBER OF NN INPUTS *************************/
+     //   var numInputs = parseInt(rawNNArchitecture.charAt(0));
+        var numInputs = 3;
+
+     //   nnRate = $("#rate-input").val();
+        nnRate = 0.6;
+      //  nnIterations = $("#iterations-input").val();
+        nnIterations = 1500;
+      //  nnError = $("#error-input").val();
+        nnError = 0.6;
 
         if (selectNN == 1) {
             trueDataArray = NN1TrueDataArray;
@@ -472,6 +483,7 @@ $(document).ready(function() {
                 output: outputArray
             });
 
+            console.log("*********************************************************************************************************");
             console.log(currentSample + " TRAINING INPUT: " + inputArray + "  --> NN# " + selectNN);
             console.log(currentSample + " TRAINING OUTPUT: " + outputArray + "  --> NN# " + selectNN);
         }
@@ -567,22 +579,28 @@ $(document).ready(function() {
     /*************** COLLECT SAMPLE - SONSOR AND MODEL DATA - STORE IN GSHEET AND ADD TO NN TRAINING OBJECT *****************/
     $('#collect-true-1').click(function() {
         //how many samples for this set?
-        getSamplesFlag = $('input.sample-size').val();
+        /************** CONTROL NUMBER OF SAMPLES COLLECTED **********/
+       // getSamplesFlag = $('input.sample-size').val();
+       getSamplesFlag = 20;
         getSamplesTypeFlag = 1;
         console.log("Collect btn NN1T #samples flag: " + getSamplesFlag);
     });
 
     $('#collect-false-1').click(function() {
         //how many samples for this set?
+             /************** CONTROL NUMBER OF SAMPLES COLLECTED **********/
         //this flag is applied in the bluetooth data notification function
-        getSamplesFlag = $('input.sample-size').val();
+      //  getSamplesFlag = $('input.sample-size').val();
+      getSamplesFlag = 20;
         getSamplesTypeFlag = 2;
         console.log("Collect btn NN1F #samples flag: " + getSamplesFlag);
     });
 
     $('#collect-true-2').click(function() {
         //how many samples for this set?
-        getSamplesFlag = $('input.sample-size').val();
+         /************** CONTROL NUMBER OF SAMPLES COLLECTED **********/
+      //  getSamplesFlag = $('input.sample-size').val();
+      getSamplesFlag = 20;
         //this flag is applied in the bluetooth data notification function
         getSamplesTypeFlag = 3;
         console.log("Collect btn NN2T #samples flag: " + getSamplesFlag);
@@ -590,7 +608,9 @@ $(document).ready(function() {
 
     $('#collect-false-2').click(function() {
         //how many samples for this set?
-        getSamplesFlag = $('input.sample-size').val();
+         /************** CONTROL NUMBER OF SAMPLES COLLECTED **********/
+     //   getSamplesFlag = $('input.sample-size').val();
+     getSamplesFlag = 20;
         //this flag is applied in the bluetooth data notification function
         getSamplesTypeFlag = 4;
         console.log("Collect btn NN2F #samples flag: " + getSamplesFlag);

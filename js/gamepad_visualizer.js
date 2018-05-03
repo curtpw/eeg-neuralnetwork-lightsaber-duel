@@ -101,28 +101,16 @@ function GenericGamepadVisualizer(pad) {
 *****************************************************************************************/
     
     var gamepadID = pad.id;
-    console.log("GAMEPAD ID:" + gamepadID);
+  //  console.log("GAMEPAD ID:" + gamepadID);
 
+    //is it the right Game Pad?
     if( gamepadID.indexOf('SparkFun') >= 0){
         xJoystick = (pad.axes[0] + 1) / 2;
         yJoystick = (pad.axes[1] + 1) / 2;
         zJoystick = (pad.axes[2] + 1) / 2;
 
-        console.log("xJoystick: " + xJoystick);
+    //    console.log("xJoystick: " + xJoystick);
 
-
-
-
-        //sensor values in bottom 2/3 of chart , 1/10 height each
-      /*  rawAccXChart = xJoystick;
-        rawAccYChart = yJoystick;
-        rawAccZChart = zJoystick;
-
-        var timeStamp = new Date().getTime();
-
-        lineAccX.append(timeStamp, rawAccXChart);
-        lineAccY.append(timeStamp, rawAccYChart);
-        lineAccZ.append(timeStamp, rawAccZChart); */
     }
 
 
