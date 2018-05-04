@@ -941,5 +941,12 @@ $(document).ready(function() {
         console.log("Clear NN2 Data");
     });
 
+    $('#clear-game-scores').click(function() {
+        jediScore = 0;
+        sithScore = 0;
+    });
+
+    
+
 }); // end on document load
 //}
