@@ -106,25 +106,25 @@ function GenericGamepadVisualizer(pad) {
 
         if(mindflexID == mindflexid1){
 
-            xJoystick = (xJoystick +  ((pad.axes[0] + 1) / 2) ) / 2;
-            yJoystick = (yJoystick +  ((pad.axes[1] + 1) / 2) ) / 2;
-            zJoystick = (zJoystick +  ((pad.axes[2] + 1) / 2) ) / 2;
+            xJoystick = (xJoystick +   (( pad.axes[0] + 1) / 2) ) / 2;
+            yJoystick = (yJoystick +     Math.pow(10,  ((pad.axes[1] + 1) / 2)     )    ) / 2;
+            zJoystick = (zJoystick +     Math.pow(10,  ((pad.axes[2] + 1) / 2)     )    ) / 2;
 
-            rxJoystick = (rxJoystick +  ((pad.axes[3] + 1) / 2) ) / 2;
-            ryJoystick = (ryJoystick +  ((pad.axes[4] + 1) / 2) ) / 2;
-            rzJoystick = (rzJoystick +  ((pad.axes[5] + 1) / 2) ) / 2;
+            rxJoystick = (rxJoystick +     Math.pow(10,  ((pad.axes[3] + 1) / 2)     )    ) / 2;
+            ryJoystick = (ryJoystick +     Math.pow(10,  ((pad.axes[4] + 1) / 2)     )    ) / 2; 
+            rzJoystick = (rzJoystick +     Math.pow(10,  ((pad.axes[5] + 1) / 2) )         ) / 2; 
 
         }
 
         if(mindflexID == mindflexid2){
 
-            xJoystick2 = (xJoystick2 +  ((pad.axes[0] + 1) / 2) ) / 2;
-            yJoystick2 = (yJoystick2 +  ((pad.axes[1] + 1) / 2) ) / 2;
-            zJoystick2 = (zJoystick2 +  ((pad.axes[2] + 1) / 2) ) / 2;
+            xJoystick2 = (xJoystick2 +   ((pad.axes[0] + 1) / 2) ) / 2;
+            yJoystick2 = (yJoystick2 +     Math.pow(10,  ((pad.axes[1] + 1) / 2)     )    ) / 2;
+            zJoystick2 = (zJoystick2 +     Math.pow(10,  ((pad.axes[2] + 1) / 2)      )    ) / 2;
 
-            rxJoystick2 = (rxJoystick2 +  ((pad.axes[3] + 1) / 2) ) / 2;
-            ryJoystick2 = (ryJoystick2 +  ((pad.axes[4] + 1) / 2) ) / 2;
-            rzJoystick2 = (rzJoystick2 +  ((pad.axes[5] + 1) / 2) ) / 2;
+            rxJoystick2 = (rxJoystick2 +     Math.pow(10,  ((pad.axes[3] + 1) / 2)      )    ) / 2;
+            ryJoystick2 = (ryJoystick2 +     Math.pow(10,  ((pad.axes[4] + 1) / 2)      )    ) / 2;
+            rzJoystick2 = (rzJoystick2 +     Math.pow(10,  ((pad.axes[5] + 1) / 2)      )    ) / 2;
 
         }
 
