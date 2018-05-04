@@ -103,28 +103,44 @@ function GenericGamepadVisualizer(pad) {
 
 
       //  console.log("****MINDFLEX ID: " + mindflexID);
-
+var tempPadVal = new Array(6).fill(0);
         if(mindflexID == mindflexid1){
 
-            xJoystick = (xJoystick +   (( pad.axes[0] + 1) / 2) ) / 2;
-            yJoystick = (yJoystick +     Math.pow(10,  ((pad.axes[1] + 1) / 2)     )    ) / 2;
-            zJoystick = (zJoystick +     Math.pow(10,  ((pad.axes[2] + 1) / 2)     )    ) / 2;
+        	tempPadVal[0] = (( pad.axes[0] + 1) / 2);
+        	tempPadVal[1] = (( pad.axes[1] + 1) / 2);
+        	tempPadVal[2] = (( pad.axes[2] + 1) / 2);
+        	tempPadVal[3] = (( pad.axes[3] + 1) / 2);
+        	tempPadVal[4] = (( pad.axes[4] + 1) / 2);
+        	tempPadVal[5] = (( pad.axes[5] + 1) / 2);
 
-            rxJoystick = (rxJoystick +     Math.pow(10,  ((pad.axes[3] + 1) / 2)     )    ) / 2;
-            ryJoystick = (ryJoystick +     Math.pow(10,  ((pad.axes[4] + 1) / 2)     )    ) / 2; 
-            rzJoystick = (rzJoystick +     Math.pow(10,  ((pad.axes[5] + 1) / 2) )         ) / 2; 
+            xJoystick = (xJoystick +   (( pad.axes[0] + 1) / 2) ) / 2;
+            yJoystick = (yJoystick +     (Math.pow(10,  tempPadVal[1] )  / 10  )  ) / 2;
+            zJoystick = (zJoystick +     (Math.pow(10,  tempPadVal[2] )  / 10  )  ) / 2;
+
+            rxJoystick = (rxJoystick +     (Math.pow(10,  tempPadVal[3] )  / 10  )  ) / 2;
+            ryJoystick = (ryJoystick +     (Math.pow(10,  tempPadVal[4] )  / 10  )  ) / 2;
+            rzJoystick = (rzJoystick +     (Math.pow(10,  tempPadVal[5] )  / 10  )  ) / 2;
 
         }
 
         if(mindflexID == mindflexid2){
 
-            xJoystick2 = (xJoystick2 +   ((pad.axes[0] + 1) / 2) ) / 2;
-            yJoystick2 = (yJoystick2 +     Math.pow(10,  ((pad.axes[1] + 1) / 2)     )    ) / 2;
-            zJoystick2 = (zJoystick2 +     Math.pow(10,  ((pad.axes[2] + 1) / 2)      )    ) / 2;
+        	tempPadVal[0] = (( pad.axes[0] + 1) / 2);
+        	tempPadVal[1] = (( pad.axes[1] + 1) / 2);
+        	tempPadVal[2] = (( pad.axes[2] + 1) / 2);
+        	tempPadVal[3] = (( pad.axes[3] + 1) / 2);
+        	tempPadVal[4] = (( pad.axes[4] + 1) / 2);
+        	tempPadVal[5] = (( pad.axes[5] + 1) / 2);
 
-            rxJoystick2 = (rxJoystick2 +     Math.pow(10,  ((pad.axes[3] + 1) / 2)      )    ) / 2;
-            ryJoystick2 = (ryJoystick2 +     Math.pow(10,  ((pad.axes[4] + 1) / 2)      )    ) / 2;
-            rzJoystick2 = (rzJoystick2 +     Math.pow(10,  ((pad.axes[5] + 1) / 2)      )    ) / 2;
+        	xJoystick2 = (xJoystick2 +   (( pad.axes[0] + 1) / 2) ) / 2;
+            yJoystick = (yJoystick2 +     (Math.pow(10,  tempPadVal[1] )  / 10  )  ) / 2;
+            zJoystick2 = (zJoystick2 +     (Math.pow(10,  tempPadVal[2] )  / 10  )  ) / 2;
+
+            rxJoystick2 = (rxJoystick2 +     (Math.pow(10,  tempPadVal[3] )  / 10  )  ) / 2;
+            ryJoystick2 = (ryJoystick2 +     (Math.pow(10,  tempPadVal[4] )  / 10  )  ) / 2;
+            rzJoystick2 = (rzJoystick2 +     (Math.pow(10,  tempPadVal[5] )  / 10  )  ) / 2;
+
+
 
         }
 
