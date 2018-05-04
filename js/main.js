@@ -10,6 +10,11 @@ var state = {};
 /*******************************************************************************************************************
  *********************************************** INITIALIZE *********************************************************
  ********************************************************************************************************************/
+ //keep track of which Mindflex EEG headset we are dealing with
+var mindflexID = 0;
+var mindflexid1 = 999;
+var mindflexid2 = 999;
+
 
 //sensor array sample data
 var sensorDataArray = new Array(12).fill(0);
@@ -51,21 +56,13 @@ var initialised = false;
 var timeout = null;
 
 //HTML GamePad API
-// Joystick & Distance var
+// Joystick var
 var xJoystick = 0;
 var yJoystick = 0;
 var zJoystick = 0;
 var rxJoystick = 0;
 var ryJoystick = 0;
 var rzJoystick = 0;
-
-var Rudder 		= 0;
-var Throttle 	= 0;
-/*
-var Accelerator = 0;
-var Brake 		= 0;
-var Steering 	= 0;
-*/
 
 var xJoystickOld = 0;
 var yJoystickOld = 0;
@@ -74,25 +71,42 @@ var rxJoystickOld = 0;
 var ryJoystickOld = 0;
 var rzJoystickOld = 0;
 
-var RudderOld 		= 0;
-var ThrottleOld 	= 0;
-
 var xJoystickDelta = 0;
 var yJoystickDelta = 0;
 var zJoystickDelta = 0;
 var rxJoystickDelta = 0;
 var ryJoystickDelta = 0;
 var rzJoystickDelta = 0;
-/*
-var AcceleratorOld = 0;
-var BrakeOld 		= 0;
-var SteeringOld 	= 0;
-*/
+
+var xJoystick2 = 0;
+var yJoystick2 = 0;
+var zJoystick2 = 0;
+var rxJoystick2 = 0;
+var ryJoystick2 = 0;
+var rzJoystick2 = 0;
+
+var xJoystickOld2 = 0;
+var yJoystickOld2 = 0;
+var zJoystickOld2 = 0;
+var rxJoystickOld2 = 0;
+var ryJoystickOld2 = 0;
+var rzJoystickOld2 = 0;
+
+var xJoystickDelta2 = 0;
+var yJoystickDelta2 = 0;
+var zJoystickDelta2 = 0;
+var rxJoystickDelta2 = 0;
+var ryJoystickDelta2 = 0;
+var rzJoystickDelta2 = 0;
+
 
 
 //Streaming time series chart var - smoothie.js
-var xJoystickLine, yJoystickLine, zJoystickLine, rxJoystickLine, ryJoystickLine, rzJoystickLine, zJoystickDeltaLine,ryJoystickDeltaLine , lineNN1, lineNN2;
+var xJoystickLine, yJoystickLine, zJoystickLine, rxJoystickLine, ryJoystickLine, rzJoystickLine, zJoystickDeltaLine, ryJoystickDeltaLine , lineNN1, lineNN2;
 var xJoystickChart, yJoystickChart, zJoystickChart, rxJoystickChart, ryJoystickChart, rzJoystickChart, zJoystickDeltaChart, ryJoystickDeltaChart; 
+
+var xJoystickLine2, yJoystickLine2, zJoystickLine2, rxJoystickLine2, ryJoystickLine2, rzJoystickLine2, zJoystickDeltaLine2, ryJoystickDeltaLine2;
+var xJoystickChart2, yJoystickChart2, zJoystickChart2, rxJoystickChart2, ryJoystickChart2, rzJoystickChart2, zJoystickDeltaChart2, ryJoystickDeltaChart2; 
 //add smoothie.js time series streaming data chart
 var chartHeight = 120;
 var chartWidth = $(window).width();
@@ -115,22 +129,38 @@ $(document).ready(function() {
     rxJoystickLine = new TimeSeries();
     ryJoystickLine = new TimeSeries();
     rzJoystickLine = new TimeSeries();
-
     zJoystickDeltaLine = new TimeSeries();  //low alpha
     ryJoystickDeltaLine = new TimeSeries();  //low beta
+
+    xJoystickLine2 = new TimeSeries();
+    yJoystickLine2 = new TimeSeries();
+    zJoystickLine2 = new TimeSeries();
+    rxJoystickLine2 = new TimeSeries();
+    ryJoystickLine2 = new TimeSeries();
+    rzJoystickLine2 = new TimeSeries();
+    zJoystickDeltaLine2 = new TimeSeries();  //low alpha
+    ryJoystickDeltaLine2 = new TimeSeries();  //low beta
 
     lineNN1 = new TimeSeries();
     lineNN2 = new TimeSeries();
 
-    streamingChart.addTimeSeries(xJoystickLine,  {strokeStyle: 'rgb(185, 156, 107)', lineWidth: 3 });
-    streamingChart.addTimeSeries(yJoystickLine,  {strokeStyle: 'rgb(143, 59, 27)',   lineWidth: 3 });
-    streamingChart.addTimeSeries(zJoystickLine,  {strokeStyle: 'rgb(213, 117, 0)',   lineWidth: 3 });
-    streamingChart.addTimeSeries(rxJoystickLine, {strokeStyle: 'rgb(128, 128, 128)', lineWidth: 3 });
-    streamingChart.addTimeSeries(ryJoystickLine,  {strokeStyle: 'rgb(240, 240, 240)', lineWidth: 3 });
-    streamingChart.addTimeSeries(rzJoystickLine,  {strokeStyle: 'rgb(140, 240, 240)', lineWidth: 3 });
+    streamingChart.addTimeSeries(xJoystickLine,         {strokeStyle: 'rgb(47, 86, 233)', lineWidth: 3 });
+    streamingChart.addTimeSeries(yJoystickLine,         {strokeStyle: 'rgb(45, 100, 245)',   lineWidth: 3 });
+    streamingChart.addTimeSeries(zJoystickLine,         {strokeStyle: 'rgb(47, 141, 255)',   lineWidth: 3 });
+    streamingChart.addTimeSeries(rxJoystickLine,        {strokeStyle: 'rgb(52, 204, 255)', lineWidth: 3 });
+    streamingChart.addTimeSeries(ryJoystickLine,        {strokeStyle: 'rgb(23, 236, 236)', lineWidth: 3 });
+    streamingChart.addTimeSeries(rzJoystickLine,        {strokeStyle: 'rgb(168, 255, 255)', lineWidth: 3 });
+    streamingChart.addTimeSeries(zJoystickDeltaLine,    {strokeStyle: 'rgb(48, 129, 238)', lineWidth: 3 });
+    streamingChart.addTimeSeries(ryJoystickDeltaLine,   {strokeStyle: 'rgb(174, 234, 255)', lineWidth: 3 });
 
-    streamingChart.addTimeSeries(zJoystickDeltaLine,  {strokeStyle: 'rgb(240, 240, 240)', lineWidth: 3 });
-    streamingChart.addTimeSeries(ryJoystickDeltaLine,  {strokeStyle: 'rgb(140, 240, 240)', lineWidth: 3 });
+    streamingChart.addTimeSeries(xJoystickLine2,        {strokeStyle: 'rgb(128, 0, 0)', lineWidth: 3 });
+    streamingChart.addTimeSeries(yJoystickLine2,        {strokeStyle: 'rgb(178, 34, 34)',   lineWidth: 3 });
+    streamingChart.addTimeSeries(zJoystickLine2,        {strokeStyle: 'rgb(220, 20, 60)',   lineWidth: 3 });
+    streamingChart.addTimeSeries(rxJoystickLine2,       {strokeStyle: 'rgb(255, 0, 0)', lineWidth: 3 });
+    streamingChart.addTimeSeries(ryJoystickLine2,       {strokeStyle: 'rgb(250, 128, 114)', lineWidth: 3 });
+    streamingChart.addTimeSeries(rzJoystickLine2,       {strokeStyle: 'rgb(240, 128, 128)', lineWidth: 3 });
+    streamingChart.addTimeSeries(zJoystickDeltaLine2,   {strokeStyle: 'rgb(128, 10, 20)', lineWidth: 3 });
+    streamingChart.addTimeSeries(ryJoystickDeltaLine2,  {strokeStyle: 'rgb(178, 40, 20)', lineWidth: 3 });
 
     streamingChart.addTimeSeries(lineNN1,   {strokeStyle: 'rgb(72, 244, 68)',   lineWidth: 4 });
     streamingChart.addTimeSeries(lineNN2,   {strokeStyle: 'rgb(244, 66, 66)',   lineWidth: 4 });
@@ -140,6 +170,9 @@ $(document).ready(function() {
 
         $('.card-middle').slideToggle();
         $('.close').toggleClass('closeRotate');
+
+        $('#saber-container1').toggleClass('hideSaber');
+        $('#saber-container2').toggleClass('hideSaber');
 
         var chartHeight = $(window).height() / 1.2;
         var chartWidth = $(window).width();

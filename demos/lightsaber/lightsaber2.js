@@ -82,9 +82,9 @@ var LightSaberDemo2 = (function () {
 	var trailEnabled          = true;
 	var fxaaEnabled           = true;
 	var soundEnabled          = true;
-	var bladeGlowColor        = colors["Blue"].bladeGlow;
-	var bladeStdColor         = colors["Blue"].bladeStd;
-	var lightColor            = colors["Blue"].light;
+	var bladeGlowColor        = colors["Red"].bladeGlow;
+	var bladeStdColor         = colors["Red"].bladeStd;
+	var lightColor            = colors["Red"].light;
 
 	// We start rotating the saber by itself after a while without user input.
 	var autoRotate               = true;   // Starts with an auto rotation

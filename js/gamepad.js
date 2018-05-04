@@ -23,10 +23,15 @@ function runAnimation() {
         if(i != 99){  //SKIP FIRST BECAUSE NOT REAL, SOME KIND OF ARTIFACT **SELECT GAMEPAD DEVICE**
 
             var pad = gamepads[i];
+
+
             if (pad) {
                 // Gamepads physically plugged into the system will not be visible to JavaScript until
                 // the user has pressed a button on a gamepad. Note that each browser has slightly different
                 // behavior for which buttons need to be pressed.
+
+                pad.mindflexID = i;
+
                 if (!buttonPressedOnAnyGamepadEver) {
                     document.getElementById("buttonNeverPressedDiv").style.display = "none";
                     document.getElementById("buttonPressedDiv").style.display = "block";
@@ -88,14 +93,14 @@ function UpdateGamepadStateTable(gamepad, index) {
         timestampStr = (gamepad.timestamp !== undefined) ? (gamepad.timestamp / 1000) + "s" : "undefined";
     }
 
-    var newRow = stateTableRowTemplate;
+ /*   var newRow = stateTableRowTemplate;
     newRow = newRow.replace(/gpIndex/g, indexStr);
     newRow = newRow.replace(/gpTimestamp/g, timestampStr);
     newRow = newRow.replace(/gpMapping/g, mappingStr);
     newRow = newRow.replace(/gpConnected/g, connectedStr);
     newRow = newRow.replace(/gpId/g, idStr);
     var containerElem = document.getElementById("gpStateTableRow" + index);
-    containerElem.innerHTML = newRow.replace(/\[#\]/g, index);
+    containerElem.innerHTML = newRow.replace(/\[#\]/g, index); */
 }
 
 function ClearGamepadStateTableRow(index) {

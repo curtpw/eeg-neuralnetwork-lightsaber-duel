@@ -67,21 +67,7 @@ function GenericGamepadVisualizer(pad) {
         var containerElem = document.getElementById(this.containerElemId);
         var strInject = "";
 
-        var axisTemplateStr = '<div id="gp[#]" class="AxisVisualizer VisualizerGeneric"><div id="val"></div></div>';
-        for (var index = 0; index < pad.axes.length; index += 2) {
 
-            //DON'T NEED MORE THAN FIRST THREE AXIS
-            //DON'T NEED MORE THAN FIRST THREE AXIS
-            if(index < 3){
-
-                var elemId = "gp" + this.index + "Axis" + index;
-                var axisStr = axisTemplateStr.replace(/gp\[#\]/g, elemId);
-                strInject += axisStr;
-
-            }
-        }
-
-        containerElem.innerHTML = strInject;
     }
 
     this.UpdateView = function GenericGamepadVisualizer_UpdateView() {
@@ -105,33 +91,62 @@ function GenericGamepadVisualizer(pad) {
 
     //is it the right Game Pad?
     if( gamepadID.indexOf('SparkFun') >= 0){
-                    xJoystick = (xJoystick +  ((pad.axes[0] + 1) / 2) ) / 2;
-                    yJoystick = (yJoystick +  ((pad.axes[1] + 1) / 2) ) / 2;
-                    zJoystick = (zJoystick +  ((pad.axes[2] + 1) / 2) ) / 2;
 
-                    rxJoystick = (rxJoystick +  ((pad.axes[3] + 1) / 2) ) / 2;
-                    ryJoystick = (ryJoystick +  ((pad.axes[4] + 1) / 2) ) / 2;
-                    rzJoystick = (rzJoystick +  ((pad.axes[5] + 1) / 2) ) / 2;
+        var mindflexID = pad.mindflexID;
 
-   //     Rudder      = (pad.axes[6] + 1) / 2;
-    //    Throttle    = (pad.axes[7] + 1) / 2;
-    /*    Accelerator = (pad.axes[8] + 1) / 2;
-        Brake       = (pad.axes[9] + 1) / 2;
-        Steering    = (pad.axes[10] + 1) / 2; */
-
-      //  console.log("Before Change", JSON.parse(JSON.stringify(pad)));
-
-/*
-                for (var index = 0; index < pad.axes.length; index++) {
-
-                    if (pad.axes[index + 1]) {
-                        console.log("AXIS " + index + " : " + pad.axes[index]);
-                    }
-                }
-                */
+        //Assign Gamepad IDs to Mindflex units
+        if(mindflexid1 != mindflexID && mindflexid2 != mindflexID && mindflexid1 > 100 && mindflexid2 > 100){
+            mindflexid1 = mindflexID;
+        } else if(mindflexid1 != mindflexID && mindflexid2 > 100){
+            mindflexid2 = mindflexID;
+        }
 
 
+        console.log("****MINDFLEX ID: " + mindflexID);
 
+        if(mindflexID == mindflexid1){
+
+            xJoystick = (xJoystick +  ((pad.axes[0] + 1) / 2) ) / 2;
+            yJoystick = (yJoystick +  ((pad.axes[1] + 1) / 2) ) / 2;
+            zJoystick = (zJoystick +  ((pad.axes[2] + 1) / 2) ) / 2;
+
+            rxJoystick = (rxJoystick +  ((pad.axes[3] + 1) / 2) ) / 2;
+            ryJoystick = (ryJoystick +  ((pad.axes[4] + 1) / 2) ) / 2;
+            rzJoystick = (rzJoystick +  ((pad.axes[5] + 1) / 2) ) / 2;
+
+            //INJECT INTO MAIN APP
+            //INJECT INTO MAIN APP
+            $(".gamepad-val-display.xjoystick").html("X1: <span>" + xJoystick.toFixed(5) + "</span");
+            $(".gamepad-val-display.yjoystick").html("Y1: <span>" + yJoystick.toFixed(5) + "</span");
+            $(".gamepad-val-display.zjoystick").html("Z1 Joystick: <span>" + zJoystick.toFixed(5) + "</span");
+
+            $(".gamepad-val-display.rxjoystick").html("rX1: <span>" + rxJoystick.toFixed(5) + "</span");
+            $(".gamepad-val-display.ryjoystick").html("rY1: <span>" + ryJoystick.toFixed(5) + "</span");
+            $(".gamepad-val-display.rzjoystick").html("rZ1: <span>" + rzJoystick.toFixed(5) + "</span");
+
+        }
+
+        if(mindflexID == mindflexid2){
+
+            xJoystick2 = (xJoystick2 +  ((pad.axes[0] + 1) / 2) ) / 2;
+            yJoystick2 = (yJoystick2 +  ((pad.axes[1] + 1) / 2) ) / 2;
+            zJoystick2 = (zJoystick2 +  ((pad.axes[2] + 1) / 2) ) / 2;
+
+            rxJoystick2 = (rxJoystick2 +  ((pad.axes[3] + 1) / 2) ) / 2;
+            ryJoystick2 = (ryJoystick2 +  ((pad.axes[4] + 1) / 2) ) / 2;
+            rzJoystick2 = (rzJoystick2 +  ((pad.axes[5] + 1) / 2) ) / 2;
+
+            //INJECT INTO MAIN APP
+            //INJECT INTO MAIN APP
+            $(".gamepad-val-display.xjoystick2").html("X2: <span>" + xJoystick2.toFixed(5) + "</span");
+            $(".gamepad-val-display.yjoystick2").html("Y2: <span>" + yJoystick2.toFixed(5) + "</span");
+            $(".gamepad-val-display.zjoystick2").html("Z2: <span>" + zJoystick2.toFixed(5) + "</span");
+
+            $(".gamepad-val-display.rxjoystick2").html("rX2: <span>" + rxJoystick2.toFixed(5) + "</span");
+            $(".gamepad-val-display.ryjoystick2").html("rY2: <span>" + ryJoystick2.toFixed(5) + "</span");
+            $(".gamepad-val-display.rzjoystick2").html("rZ2: <span>" + rzJoystick2.toFixed(5) + "</span");
+
+        }
 
 
 
@@ -139,36 +154,10 @@ function GenericGamepadVisualizer(pad) {
 
     }
 
-
-
-    //INJECT INTO MAIN APP
-    //INJECT INTO MAIN APP
-    $(".gamepad-val-display.xjoystick").html("X Joystick: <span>" + xJoystick.toFixed(5) + "</span");
-    $(".gamepad-val-display.yjoystick").html("Y Joystick: <span>" + yJoystick.toFixed(5) + "</span");
-    $(".gamepad-val-display.zjoystick").html("Z Joystick: <span>" + zJoystick.toFixed(5) + "</span");
-
-        $(".gamepad-val-display.rxjoystick").html("rX Joystick: <span>" + rxJoystick.toFixed(5) + "</span");
-    $(".gamepad-val-display.ryjoystick").html("rY Joystick: <span>" + ryJoystick.toFixed(5) + "</span");
-    $(".gamepad-val-display.rzjoystick").html("rZ Joystick: <span>" + rzJoystick.toFixed(5) + "</span");
-
- //   pad.axes[3] = 0; pad.axes[4] = 0;//put distance in the center of the little axis viz
-
-                for (var index = 0; index < pad.axes.length; index += 2) {
-
-                    //DON'T NEED MORE THAN FIRST THREE AXIS
-                    if(index < 4){
-
-                        var elemId = "gp" + this.index + "Axis" + index;
-                        var visualizer = new AxisVisualizer(elemId);
-                        visualizer.setXAxisValue(pad.axes[index]);
-                        if (pad.axes[index + 1]) {
-                            visualizer.setYAxisValue(pad.axes[index + 1]);
-                        }
-                    }
-                }
+/*
 
                 UpdateGamepadStateTable(pad, pad.index);
-                containerElem.classList.remove("gpTableCellUnConnected");
+                containerElem.classList.remove("gpTableCellUnConnected"); */
             }
         } else {
       //      containerElem.innerHTML = "<div class='gpNotConnectedText'>Gamepad not connected.</div>";
@@ -189,7 +178,7 @@ function AxisVisualizer(elemId) {
     this.cxCursor = 11;
 
     this.setElemStyles = function AxisVisualizer_setElemStyles(elem) {
-        var cxImage = 100 + (this.cxCursor - 1);
+     /*   var cxImage = 100 + (this.cxCursor - 1);
         var cxOffset = (this.cxCursor - 1) / 2;
         elem.style.width = cxImage + "px";
         elem.style.height = cxImage + "px";
@@ -200,7 +189,7 @@ function AxisVisualizer(elemId) {
         if (this.value > 1.0 || this.value < -1.0) { alert('Invalid Value!') };
         var childNodes = elem.childNodes;
         var lastChild = childNodes[childNodes.length - 1];
-        lastChild.innerHTML = FloatValueAsString(this.XAxisValue) + ',' + FloatValueAsString(this.YAxisValue);
+        lastChild.innerHTML = FloatValueAsString(this.XAxisValue) + ',' + FloatValueAsString(this.YAxisValue); */
     }
 
     this.setXAxisValue = function AxisVisualizer_setXAxisValue(val) {

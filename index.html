@@ -462,7 +462,7 @@
             font-size: 12px;
         }
     
-        .sensor-data .data{
+        .sensor-data div .data{
           color: white;
           width: 140px;
           display: inline-block;
@@ -501,12 +501,12 @@
             margin-right: 10px;
             margin-bottom: 10px;
             margin-top: 6px;
-            width: 250px;
+            width: 220px;
         }
         #activate-btn, #export-btn, #activate2-btn, #export2-btn{
           background-color: #6d6d6d;
           border-color: #6d6d6d;
-          width: 150px;
+          width: 230px;
         }
         #activate-btn.haveNN, #export-btn.haveNN, #activate2-btn.haveNN, #export2-btn.haveNN{
           background-color: green;
@@ -750,27 +750,26 @@
         display: inline-block;
         margin-right: 6px;
     }
-    /*
-    #dump-print{
-      background-color: white;
-      width: 100%;
-      height: auto;
-      display: none;
-    }
-    #dump-print.active-print{
-      display: block;
-    }
-    */
+
     body .btn:hover, button.btn:hover  {
         border-color: white !important;
         border: 1px solid !important;
     }
     
-    .accelerometer-x-key{ background-color: rgb(185, 156, 107); }
-    .accelerometer-y-key{ background-color: rgb(143, 59, 27); }
-    .accelerometer-z-key{ background-color: rgb(213, 117, 0); }
-    .pitch-key{ background-color: rgb(128, 128, 128); }
-    .roll-key{ background-color: rgb(240, 240, 240); }
+    .accelerometer-x-key{ background-color: rgb(47, 86, 233); }
+    .accelerometer-y-key{ background-color: rgb(45, 100, 245); }
+    .accelerometer-z-key{ background-color: rgb(47, 141, 255); }
+    .pitch-key{ background-color: rgb(52, 204, 255); }
+    .roll-key{ background-color: rgb(23, 236, 236); }
+    .joystick-rz-key{ background-color: rgb(168, 255, 255);	}
+
+    .accelerometer-x-key2{ background-color: rgb(128, 0, 0); }
+    .accelerometer-y-key2{ background-color: rgb(178, 34, 34); }
+    .accelerometer-z-key2{ background-color: rgb(220, 20, 60); }
+    .pitch-key2{ background-color: rgb(255, 0, 0); }
+    .roll-key2{ background-color: rgb(250, 128, 114); }
+    .joystick-rz-key2{ background-color: rgb(240, 128, 128);	}
+
     .nn1-score-label{ color: rgb(72, 244, 68); font-weight: 600; }
     .nn2-score-label{ color: rgb(244, 66, 66); font-weight: 600; }
 
@@ -788,7 +787,27 @@
       width: 700px;
       z-index: 0;
     }
-    </style>
+    #saber-container1.hideSaber, #saber-container2.hideSaber{
+    	display: none;
+    }
+
+    #game-score{
+    	position: absolute;
+	    top: 0px;
+	    right: 0px;
+	    width: 300px;
+    }
+    .score-player1{
+    	color: rgb(47, 141, 255);
+    	display: inline-block;
+    	font-size: 24px;
+    }
+    .score-player2{
+    	color: red;
+    	display: inline-block;
+    	font-size: 24px;
+    }
+</style>
 
 
 </head>
@@ -802,14 +821,29 @@
     <div class="sensor-container">
         <!-- display raw numerical data -->
         <div class="sensor-data">
-            <div class="data"><span class="accelerometer-x-key key">&nbsp;&nbsp;&nbsp;</span>Delta: <span class="joystick-x-data"></span></div>
-            <div class="data"><span class="accelerometer-y-key key">&nbsp;&nbsp;&nbsp;</span>Theta: <span class="joystick-y-data"></span></div>
-            <div class="data"><span class="accelerometer-z-key key">&nbsp;&nbsp;&nbsp;</span>LowAlpha: <span class="joystick-z-data"></span></div>
-            <div class="data"><span class="pitch-key key">&nbsp;&nbsp;&nbsp;</span>HighAlpha: <span class="joystick-rx-data"></span></div>
-            <div class="data"><span class="roll-key key">&nbsp;&nbsp;&nbsp;</span>LowBeta: <span class="joystick-ry-data"></span></div>
-            <div class="data"><span class="accelerometer-x-key key">&nbsp;&nbsp;&nbsp;</span>HighBeta: <span class="joystick-rz-data"></span></div>
-            <div class="data"><span class="accelerometer-y-key key">&nbsp;&nbsp;&nbsp;</span>LowGamma: <span class="joystick-rudder-data"></span></div>
-            <div class="data"><span class="accelerometer-z-key key">&nbsp;&nbsp;&nbsp;</span>MidGamma: <span class="joystick-throttle-data"></span></div>
+
+        	<div class="joystick-eeg-display" id="eeg-joystick1">
+	            <div class="data"><span class="accelerometer-x-key key">&nbsp;&nbsp;&nbsp;</span>Delta: <span class="joystick-x-data"></span></div>
+	            <div class="data"><span class="accelerometer-y-key key">&nbsp;&nbsp;&nbsp;</span>Theta: <span class="joystick-y-data"></span></div>
+	            <div class="data"><span class="accelerometer-z-key key">&nbsp;&nbsp;&nbsp;</span>LowAlpha: <span class="joystick-z-data"></span></div>
+	            <div class="data"><span class="pitch-key key">&nbsp;&nbsp;&nbsp;</span>HighAlpha: <span class="joystick-rx-data"></span></div>
+	            <div class="data"><span class="roll-key key">&nbsp;&nbsp;&nbsp;</span>LowBeta: <span class="joystick-ry-data"></span></div>
+	            <div class="data"><span class="joystick-rz-key key">&nbsp;&nbsp;&nbsp;</span>HighBeta: <span class="joystick-rz-data"></span></div>
+       		</div>
+
+       		<div class="joystick-eeg-display" id="eeg-joystick2">
+	            <div class="data"><span class="accelerometer-x-key2 key">&nbsp;&nbsp;&nbsp;</span>Delta: <span class="joystick-x-data2"></span></div>
+	            <div class="data"><span class="accelerometer-y-key2 key">&nbsp;&nbsp;&nbsp;</span>Theta: <span class="joystick-y-data2"></span></div>
+	            <div class="data"><span class="accelerometer-z-key2 key">&nbsp;&nbsp;&nbsp;</span>LowAlpha: <span class="joystick-z-data2"></span></div>
+	            <div class="data"><span class="pitch-key2 key">&nbsp;&nbsp;&nbsp;</span>HighAlpha: <span class="joystick-rx-data2"></span></div>
+	            <div class="data"><span class="roll-key2 key">&nbsp;&nbsp;&nbsp;</span>LowBeta: <span class="joystick-ry-data2"></span></div>
+	            <div class="data"><span class="joystick-rz-key2 key">&nbsp;&nbsp;&nbsp;</span>HighBeta: <span class="joystick-rz-data2"></span></div>
+       		</div>
+       		<div id="game-score">
+       			<div class="score score-player1"><span class="player-label">&nbsp;&nbsp;&nbsp;</span>Jedi Score: <span class="player1-score"></span></div>
+       			<div class="score score-player2"><span class="player-label">&nbsp;&nbsp;&nbsp;</span>Sith Score: <span class="player2-score"></span></div>
+
+       		</div>
         </div>
 
         <!-- container for smoothie.js timeseries streaming data chart (canvas) -->
@@ -834,24 +868,24 @@
             <span id="message"></span>
 
             <!-- NN1 Add True  -->
-            <button id="collect-true-1" class="btn collect true collect-true-1">Player 1: Sample Concentration</button>
+            <button id="collect-true-1" class="btn collect true collect-true-1">Jedi: Sample Concentration</button>
             <!-- clear NN1 samples  -->
             <button id="clear-true-1" class="btn clear true clear-1">clear</button>
             <!-- NN1 Add False -->
-            <button id="collect-false-1" class="btn collect false collect-false-1">Player 1: Sample Meditation</button>
+            <button id="collect-false-1" class="btn collect false collect-false-1">Jedi: Sample Meditation</button>
             <!-- NN2 Add True -->
-            <button id="collect-true-2" class="btn collect true collect-true-2">Player 2: Sample Concentration</button>
+            <button id="collect-true-2" class="btn collect true collect-true-2">Sith: Sample Concentration</button>
             <!-- clear NN2 samples  -->
             <button id="clear-true-2" class="btn clear true clear-2">clear</button>
             <!-- NN2 Add False -->
-            <button id="collect-false-2" class="btn collect false collect-false-2">Player 2: Sample Meditation</button>
+            <button id="collect-false-2" class="btn collect false collect-false-2">Sith: Sample Meditation</button>
         </div>
 
         <div id="nn-interface-container" class="data-ui">
-            <button id="train-btn" class="btn">Train Player 1 Neural Network</button>
-            <button id="activate-btn" class="btn">Activate Player 1</button>
-            <button id="train2-btn" class="btn">Train Player 2 Neural Network</button>
-            <button id="activate2-btn" class="btn">Activate Player 2</button>
+            <button id="train-btn" class="btn">Train Jedi Neural Network</button>
+            <button id="activate-btn" class="btn">Activate Jedi Saber Mind Meld</button>
+            <button id="train2-btn" class="btn">Train Sith Neural Network</button>
+            <button id="activate2-btn" class="btn">Activate Sith Saber Mind Meld</button>
         </div>
 
     </div>
@@ -874,13 +908,21 @@
 
       	<div id="interface-controls">
   	   <!-- RANGE SLIDER JS AT BOTTOM -->
-        <div class="gamepad gamepad-val-display xjoystick">X Joystick:<span></span></div>
-        <div class="gamepad gamepad-val-display yjoystick">Y Joystick:<span></span></div>
-        <div class="gamepad gamepad-val-display zjoystick">Z Joystick:<span></span></div>
+        <div class="gamepad gamepad-val-display xjoystick">X1:<span></span></div>
+        <div class="gamepad gamepad-val-display yjoystick">Y1:<span></span></div>
+        <div class="gamepad gamepad-val-display zjoystick">Z1:<span></span></div>
 
-        <div class="gamepad gamepad-val-display rxjoystick">rX Joystick:<span></span></div>
-        <div class="gamepad gamepad-val-display ryjoystick">rY Joystick:<span></span></div>
-        <div class="gamepad gamepad-val-display rzjoystick">rZ Joystick:<span></span></div>
+        <div class="gamepad gamepad-val-display rxjoystick">rX1:<span></span></div>
+        <div class="gamepad gamepad-val-display ryjoystick">rY1:<span></span></div>
+        <div class="gamepad gamepad-val-display rzjoystick">rZ1:<span></span></div>
+
+        <div class="gamepad gamepad-val-display xjoystick2">X2:<span></span></div>
+        <div class="gamepad gamepad-val-display yjoystick2">Y2:<span></span></div>
+        <div class="gamepad gamepad-val-display zjoystick2">Z2:<span></span></div>
+
+        <div class="gamepad gamepad-val-display rxjoystick2">rX2:<span></span></div>
+        <div class="gamepad gamepad-val-display ryjoystick2">rY2:<span></span></div>
+        <div class="gamepad gamepad-val-display rzjoystick2">rZ2:<span></span></div>
 
      <!--   <div id="controllerContainer">
             <div class="stickPointer leftStick">0</div>
