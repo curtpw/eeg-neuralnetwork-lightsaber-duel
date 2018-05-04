@@ -329,8 +329,7 @@ $(document).ready(function() {
              //   lineRoll.append(timeStamp, rawRollChart);
 
                 //have the values been updated?
-                if(xJoystick.toFixed(3) != xJoystickOld.toFixed(3) 
-                    && yJoystick.toFixed(3) != yJoystickOld.toFixed(3) 
+                if(yJoystick.toFixed(3) != yJoystickOld.toFixed(3) 
                     && zJoystick.toFixed(3) != zJoystickOld.toFixed(3)
                     && rxJoystick.toFixed(3) != rxJoystickOld.toFixed(3)
                     && ryJoystick.toFixed(3) != ryJoystickOld.toFixed(3)){
@@ -438,8 +437,7 @@ $(document).ready(function() {
 
 
                 //have the values been updated?
-                if(xJoystick2.toFixed(3) != xJoystickOld2.toFixed(3) 
-                    && yJoystick2.toFixed(3) != yJoystickOld2.toFixed(3) 
+                if(yJoystick2.toFixed(3) != yJoystickOld2.toFixed(3) 
                     && zJoystick2.toFixed(3) != zJoystickOld2.toFixed(3)
                     && rxJoystick2.toFixed(3) != rxJoystickOld2.toFixed(3)
                     && ryJoystick2.toFixed(3) != ryJoystickOld2.toFixed(3)){
@@ -644,8 +642,10 @@ $(document).ready(function() {
         }*/
 
         if (haveNNFlag2 && activeNNFlag2 && selectNN == 2) {
+            //PROP MEDITATION VAL FOR SITH
+            feedArray[0] = sensorDataArray2[0];
 
-            feedArray[0] = sensorDataArray2[1];
+          //  feedArray[0] = sensorDataArray2[1];
             feedArray[1] = sensorDataArray2[2];
             feedArray[2] = sensorDataArray2[4];
             feedArray[3] = sensorDataArray2[6];
@@ -695,7 +695,9 @@ $(document).ready(function() {
         var combinedTrueFalse = new Array(13).fill(0);
         trainingData = new Array;
 
-        var rawNNArchitecture = $(".range-slider__value.nn-architecture").html();
+        var rawNNArchitecture;// = $(".range-slider__value.nn-architecture").html();
+
+        rawNNArchitecture == '6:5:5:1';
 
         /**************** SET NUMBER OF NN INPUTS *************************/
      //   var numInputs = parseInt(rawNNArchitecture.charAt(0));
@@ -704,7 +706,7 @@ $(document).ready(function() {
      //   nnRate = $("#rate-input").val();
         nnRate = 0.6;
       //  nnIterations = $("#iterations-input").val();
-        nnIterations = 100;
+        nnIterations = 200;
       //  nnError = $("#error-input").val();
         nnError = 0.1;
 
@@ -783,6 +785,11 @@ $(document).ready(function() {
             inputArray[4] = (currentSample[7]);
             inputArray[5] = (currentSample[8]);
 
+            //PROP MEDITATION VAL FOR SITH
+            if (selectNN == 2) {
+                inputArray[0] = (currentSample[0]);
+            }
+
             trainingData.push({
                 input: inputArray,
                 output: outputArray
@@ -812,7 +819,7 @@ $(document).ready(function() {
             haveNNFlag1 = true;
             trainNNFlag1 = false;
             $('#activate-btn').addClass("haveNN");
-            $('#export-btn').addClass("haveNN");
+         //  $('#export-btn').addClass("haveNN");
 
         } else if (selectNN == 2) {
             console.log("TRAINING ON selectNN2");
@@ -832,7 +839,7 @@ $(document).ready(function() {
             haveNNFlag2 = true;
             trainNNFlag2 = false;
             $('#activate2-btn').addClass("haveNN");
-            $('#export2-btn').addClass("haveNN");
+         //   $('#export2-btn').addClass("haveNN");
         }
     }
 

@@ -132,8 +132,8 @@ var tempPadVal = new Array(6).fill(0);
         	tempPadVal[4] = (( pad.axes[4] + 1) / 2);
         	tempPadVal[5] = (( pad.axes[5] + 1) / 2);
 
-        	xJoystick2 = (xJoystick2 +   (( pad.axes[0] + 1) / 2) ) / 2;
-            yJoystick = (yJoystick2 +     (Math.pow(10,  tempPadVal[1] )  / 10  )  ) / 2;
+        	xJoystick2 = (xJoystick2 +   tempPadVal[0] ) / 2;
+            yJoystick2 = (yJoystick2 +     (Math.pow(10,  tempPadVal[1] )  / 10  )  ) / 2;
             zJoystick2 = (zJoystick2 +     (Math.pow(10,  tempPadVal[2] )  / 10  )  ) / 2;
 
             rxJoystick2 = (rxJoystick2 +     (Math.pow(10,  tempPadVal[3] )  / 10  )  ) / 2;
