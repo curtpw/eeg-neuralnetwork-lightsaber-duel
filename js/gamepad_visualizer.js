@@ -105,13 +105,32 @@ function GenericGamepadVisualizer(pad) {
 
     //is it the right Game Pad?
     if( gamepadID.indexOf('SparkFun') >= 0){
-        xJoystick = (pad.axes[0] + 1) / 2;
-        yJoystick = (pad.axes[1] + 1) / 2;
-        zJoystick = (pad.axes[2] + 1) / 2;
+                    xJoystick = (xJoystick +  ((pad.axes[0] + 1) / 2) ) / 2;
+                    yJoystick = (yJoystick +  ((pad.axes[1] + 1) / 2) ) / 2;
+                    zJoystick = (zJoystick +  ((pad.axes[2] + 1) / 2) ) / 2;
 
-        rxJoystick = (pad.axes[3] + 1) / 2;
-        ryJoystick = (pad.axes[4] + 1) / 2;
-        rzJoystick = (pad.axes[5] + 1) / 2;
+                    rxJoystick = (rxJoystick +  ((pad.axes[3] + 1) / 2) ) / 2;
+                    ryJoystick = (ryJoystick +  ((pad.axes[4] + 1) / 2) ) / 2;
+                    rzJoystick = (rzJoystick +  ((pad.axes[5] + 1) / 2) ) / 2;
+
+   //     Rudder      = (pad.axes[6] + 1) / 2;
+    //    Throttle    = (pad.axes[7] + 1) / 2;
+    /*    Accelerator = (pad.axes[8] + 1) / 2;
+        Brake       = (pad.axes[9] + 1) / 2;
+        Steering    = (pad.axes[10] + 1) / 2; */
+
+      //  console.log("Before Change", JSON.parse(JSON.stringify(pad)));
+
+/*
+                for (var index = 0; index < pad.axes.length; index++) {
+
+                    if (pad.axes[index + 1]) {
+                        console.log("AXIS " + index + " : " + pad.axes[index]);
+                    }
+                }
+                */
+
+
 
 
 
@@ -124,13 +143,13 @@ function GenericGamepadVisualizer(pad) {
 
     //INJECT INTO MAIN APP
     //INJECT INTO MAIN APP
-    $(".gamepad-val-display.xjoystick").html("X Joystick: <span>" + xJoystick + "</span");
-    $(".gamepad-val-display.yjoystick").html("Y Joystick: <span>" + yJoystick + "</span");
-    $(".gamepad-val-display.zjoystick").html("Z Joystick: <span>" + zJoystick + "</span");
+    $(".gamepad-val-display.xjoystick").html("X Joystick: <span>" + xJoystick.toFixed(5) + "</span");
+    $(".gamepad-val-display.yjoystick").html("Y Joystick: <span>" + yJoystick.toFixed(5) + "</span");
+    $(".gamepad-val-display.zjoystick").html("Z Joystick: <span>" + zJoystick.toFixed(5) + "</span");
 
-        $(".gamepad-val-display.rxjoystick").html("rX Joystick: <span>" + rxJoystick + "</span");
-    $(".gamepad-val-display.ryjoystick").html("rY Joystick: <span>" + ryJoystick + "</span");
-    $(".gamepad-val-display.rzjoystick").html("rZ Joystick: <span>" + rzJoystick + "</span");
+        $(".gamepad-val-display.rxjoystick").html("rX Joystick: <span>" + rxJoystick.toFixed(5) + "</span");
+    $(".gamepad-val-display.ryjoystick").html("rY Joystick: <span>" + ryJoystick.toFixed(5) + "</span");
+    $(".gamepad-val-display.rzjoystick").html("rZ Joystick: <span>" + rzJoystick.toFixed(5) + "</span");
 
  //   pad.axes[3] = 0; pad.axes[4] = 0;//put distance in the center of the little axis viz
 

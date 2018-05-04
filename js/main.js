@@ -59,6 +59,14 @@ var rxJoystick = 0;
 var ryJoystick = 0;
 var rzJoystick = 0;
 
+var Rudder 		= 0;
+var Throttle 	= 0;
+/*
+var Accelerator = 0;
+var Brake 		= 0;
+var Steering 	= 0;
+*/
+
 var xJoystickOld = 0;
 var yJoystickOld = 0;
 var zJoystickOld = 0;
@@ -66,12 +74,27 @@ var rxJoystickOld = 0;
 var ryJoystickOld = 0;
 var rzJoystickOld = 0;
 
+var RudderOld 		= 0;
+var ThrottleOld 	= 0;
+
+var xJoystickDelta = 0;
+var yJoystickDelta = 0;
+var zJoystickDelta = 0;
+var rxJoystickDelta = 0;
+var ryJoystickDelta = 0;
+var rzJoystickDelta = 0;
+/*
+var AcceleratorOld = 0;
+var BrakeOld 		= 0;
+var SteeringOld 	= 0;
+*/
+
 
 //Streaming time series chart var - smoothie.js
-var xJoystickLine, yJoystickLine, zJoystickLine, rxJoystickLine, ryJoystickLine, rzJoystickLine, linePitch, lineRoll, lineNN1, lineNN2;
-var xJoystickChart, yJoystickChart, zJoystickChart, rxJoystickChart, ryJoystickChart, rzJoystickChart, rawPitchChart, rawRollChart; 
+var xJoystickLine, yJoystickLine, zJoystickLine, rxJoystickLine, ryJoystickLine, rzJoystickLine, zJoystickDeltaLine,ryJoystickDeltaLine , lineNN1, lineNN2;
+var xJoystickChart, yJoystickChart, zJoystickChart, rxJoystickChart, ryJoystickChart, rzJoystickChart, zJoystickDeltaChart, ryJoystickDeltaChart; 
 //add smoothie.js time series streaming data chart
-var chartHeight = 100;
+var chartHeight = 120;
 var chartWidth = $(window).width();
 
 $(document).ready(function() {
@@ -89,9 +112,12 @@ $(document).ready(function() {
     xJoystickLine = new TimeSeries();
     yJoystickLine = new TimeSeries();
     zJoystickLine = new TimeSeries();
-        rxJoystickLine = new TimeSeries();
+    rxJoystickLine = new TimeSeries();
     ryJoystickLine = new TimeSeries();
     rzJoystickLine = new TimeSeries();
+
+    zJoystickDeltaLine = new TimeSeries();  //low alpha
+    ryJoystickDeltaLine = new TimeSeries();  //low beta
 
     lineNN1 = new TimeSeries();
     lineNN2 = new TimeSeries();
@@ -102,6 +128,9 @@ $(document).ready(function() {
     streamingChart.addTimeSeries(rxJoystickLine, {strokeStyle: 'rgb(128, 128, 128)', lineWidth: 3 });
     streamingChart.addTimeSeries(ryJoystickLine,  {strokeStyle: 'rgb(240, 240, 240)', lineWidth: 3 });
     streamingChart.addTimeSeries(rzJoystickLine,  {strokeStyle: 'rgb(140, 240, 240)', lineWidth: 3 });
+
+    streamingChart.addTimeSeries(zJoystickDeltaLine,  {strokeStyle: 'rgb(240, 240, 240)', lineWidth: 3 });
+    streamingChart.addTimeSeries(ryJoystickDeltaLine,  {strokeStyle: 'rgb(140, 240, 240)', lineWidth: 3 });
 
     streamingChart.addTimeSeries(lineNN1,   {strokeStyle: 'rgb(72, 244, 68)',   lineWidth: 4 });
     streamingChart.addTimeSeries(lineNN2,   {strokeStyle: 'rgb(244, 66, 66)',   lineWidth: 4 });
@@ -137,6 +166,12 @@ $(document).ready(function() {
         var ryJoystickElement =    document.getElementsByClassName('joystick-ry-data')[0];
         var rzJoystickElement =    document.getElementsByClassName('joystick-rz-data')[0];
 
+        var rudderJoystickElement =    document.getElementsByClassName('joystick-rudder-data')[0];
+        var throttleJoystickElement =    document.getElementsByClassName('joystick-throttle-data')[0];
+  /*      var acceleratorJoystickElement =    document.getElementsByClassName('joystick-accelerator-data')[0];
+        var brakeJoystickElement =    document.getElementsByClassName('joystick-brake-data')[0];
+        var steeringJoystickElement =    document.getElementsByClassName('joystick-steering-data')[0]; */
+
         xJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[0] * 5) ).toFixed(2);
         yJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[1] * 5) ).toFixed(2);
         zJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[2] * 5) ).toFixed(2);
@@ -144,6 +179,12 @@ $(document).ready(function() {
         rxJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[3] * 5) ).toFixed(2);
         ryJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[4] * 5) ).toFixed(2);
         rzJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[5] * 5) ).toFixed(2);
+
+        rudderJoystickElement =      Math.pow(10, (sensorDataArray[6] * 5) ).toFixed(2);
+        throttleJoystickElement =      Math.pow(10, (sensorDataArray[7] * 5) ).toFixed(2);
+    /*    acceleratorJoystickElement =      Math.pow(10, (sensorDataArray[8] * 5) ).toFixed(2);
+        brakeJoystickElement  =      Math.pow(10, (sensorDataArray[9] * 5) ).toFixed(2);
+        steeringJoystickElement  =      Math.pow(10, (sensorDataArray[10] * 5) ).toFixed(2); */
     }
 
     function updateSampleCountDisplay() {
@@ -172,18 +213,19 @@ $(document).ready(function() {
                 //load data into global array
                 sensorDataArray = new Array(12).fill(0);
 
-                sensorDataArray[0] = xJoystick;
-                sensorDataArray[1] = yJoystick;
-                sensorDataArray[2] = zJoystick;
-                sensorDataArray[3] = rxJoystick;
-                sensorDataArray[4] = ryJoystick;
-                sensorDataArray[5] = rzJoystick;
+                sensorDataArray[0] = xJoystick.toFixed(5);
+                sensorDataArray[1] = yJoystick.toFixed(5); //theta
+                sensorDataArray[2] = zJoystick.toFixed(5); //low alpha
+                sensorDataArray[3] = rxJoystick.toFixed(5);
+                sensorDataArray[4] = ryJoystick.toFixed(5); //low beta
+                sensorDataArray[5] = rzJoystick.toFixed(5);
 
-                sensorDataArray[6] = 0;
-                sensorDataArray[7] = 0;
-                sensorDataArray[8] = 0;
-                sensorDataArray[9] = 0;
-                sensorDataArray[10] = 0;
+                sensorDataArray[6] = yJoystickDelta.toFixed(5);  //theta
+				sensorDataArray[7] = zJoystickDelta.toFixed(5);  //low alpha
+				sensorDataArray[8] = ryJoystickDelta.toFixed(5); //low beta
+				sensorDataArray[9] = 0;
+				sensorDataArray[10] = 0;
+
                 sensorDataArray[11] = timeStamp;
 
 
@@ -196,15 +238,21 @@ $(document).ready(function() {
                 ryJoystickChart = ((sensorDataArray[4] + 1) / 2);
                 rzJoystickChart = ((sensorDataArray[5] + 1) / 2);
 
+            //    rudderJoystickChart = ((sensorDataArray[6] + 1) / 2);
+            //    throttleJoystickChart = ((sensorDataArray[7] + 1) / 2);
+
 
                 //sensor values in bottom 2/3 of chart , 1/10 height each
-                xJoystickChart = (xJoystickChart / 4.5) + 3 * 0.1;
-                yJoystickChart = (yJoystickChart / 4.5) + 2.5 * 0.1;
-                zJoystickChart = (zJoystickChart / 4.5) + 2 * 0.1;
+                xJoystickChart = (xJoystickChart / 2) + 3 * 0.1;
+                yJoystickChart = (yJoystickChart / 2) + 2.5 * 0.1;
+                zJoystickChart = (zJoystickChart / 2) + 2 * 0.1;
 
-                rxJoystickChart = (rxJoystickChart / 4.5) + 1.5 * 0.1;
-                ryJoystickChart = (ryJoystickChart / 4.5) + 1 * 0.1;
-                rzJoystickChart = (rzJoystickChart / 4.5) + 0.5 * 0.1;
+                rxJoystickChart = (rxJoystickChart / 2) + 1.5 * 0.1;
+                ryJoystickChart = (ryJoystickChart / 2) + 1 * 0.1;
+                rzJoystickChart = (rzJoystickChart / 2) + 0.5 * 0.1;
+
+                zJoystickDeltaChart = (zJoystickDeltaChart / 2) + 1 * 0.1;
+                ryJoystickDeltaChart = (ryJoystickDeltaChart / 2) + 0.5 * 0.1;
 
 
                 xJoystickLine.append(timeStamp, xJoystickChart);
@@ -215,11 +263,32 @@ $(document).ready(function() {
                 ryJoystickLine.append(timeStamp, ryJoystickChart);
                 rzJoystickLine.append(timeStamp, rzJoystickChart);
 
+                zJoystickDeltaLine.append(timeStamp, zJoystickDeltaChart);
+                ryJoystickDeltaLine.append(timeStamp, ryJoystickDeltaChart);
+
+
+           //     rudderJoystickLine.append(timeStamp, rudderJoystickChart);
+           //     throttleJoystickLine.append(timeStamp, throttleJoystickChart);
+
              //   linePitch.append(timeStamp, rawPitchChart);
              //   lineRoll.append(timeStamp, rawRollChart);
 
                 //have the values been updated?
-                if(xJoystick != xJoystickOld || yJoystick != yJoystickOld || zJoystick != zJoystickOld){
+                if(xJoystick.toFixed(3) != xJoystickOld.toFixed(3) 
+                    && yJoystick.toFixed(3) != yJoystickOld.toFixed(3) 
+                    && zJoystick.toFixed(3) != zJoystickOld.toFixed(3)
+                    && rxJoystick.toFixed(3) != rxJoystickOld.toFixed(3)
+                    && ryJoystick.toFixed(3) != ryJoystickOld.toFixed(3)){
+
+                    xJoystickDelta = (xJoystickOld - xJoystick + 1) / 2 ;
+                    yJoystickDelta = (yJoystickOld - yJoystick + 1) / 2 ;
+                    zJoystickDelta = (zJoystickOld - zJoystick + 1) / 2 ;
+                    rxJoystickDelta = (rxJoystickOld - rxJoystick + 1) / 2 ;
+                    ryJoystickDelta = (ryJoystickOld - ryJoystick + 1) / 2 ;
+                    rzJoystickDelta = (rzJoystickOld - rzJoystick + 1) / 2 ;
+
+                    console.log("Delta: " + yJoystickDelta + "  " + zJoystickDelta + "  " + ryJoystickDelta)
+
                     xJoystickOld = xJoystick;
                     yJoystickOld = yJoystick;
                     zJoystickOld = zJoystick;
@@ -227,6 +296,11 @@ $(document).ready(function() {
                     rxJoystickOld = rxJoystick;
                     ryJoystickOld = ryJoystick;
                     rzJoystickOld = rzJoystick;
+
+                 //   rudderJoystickOld = rudderJoystick;
+                 //   throttleJoystickOld = throttleJoystick;
+
+
 
                     //add new values to NN training data
                     if (getSamplesFlag > 0) {
@@ -260,24 +334,11 @@ $(document).ready(function() {
     
 
 
-    
-
-    function getSensorData() {
-        if (state.accelerometer) {
-            sensorDataArray[0] = xJoystick.toFixed(2);
-            sensorDataArray[1] = yJoystick.toFixed(2);
-            sensorDataArray[2] = zJoystick.toFixed(2);
-            sensorDataArray[3] = rxJoystick.toFixed(2);
-            sensorDataArray[4] = ryJoystick.toFixed(2);
-            sensorDataArray[5] = rzJoystick.toFixed(2);
-        }
-    } 
-
     function collectData() {
         var collectedDataArray = new Array(12).fill(0); //12 device 
         collectedDataArray = sensorDataArray;
 
-        console.log("web bluetooth sensor data:");
+        console.log("EEG data:");
         console.dir(collectedDataArray);
 
         //add sample to set
@@ -321,7 +382,7 @@ $(document).ready(function() {
     var Network = synaptic.Network;
     var Trainer = synaptic.Trainer;
     var Architect = synaptic.Architect;
-    var neuralNet = new Architect.LSTM(5, 5, 5, 1);
+    var neuralNet = new Architect.LSTM(6, 5, 5, 1);
     var trainer = new Trainer(neuralNet);
     var trainingData;
 
@@ -331,7 +392,7 @@ $(document).ready(function() {
     var Network2 = synaptic.Network;
     var Trainer2 = synaptic.Trainer;
     var Architect2 = synaptic.Architect;
-    var neuralNet2 = new Architect2.LSTM(5, 5, 5, 1);
+    var neuralNet2 = new Architect2.LSTM(6, 5, 5, 1);
     var trainer2 = new Trainer2(neuralNet2);
     var trainingData2;
 
@@ -357,12 +418,12 @@ $(document).ready(function() {
         }
 
         if ((selectNN == 1 && NN1NumInputs == 3) || (selectNN == 2 && NN2NumInputs == 3)) { */
-            feedArray[0] = sensorDataArray[0];
-            feedArray[1] = sensorDataArray[1];
-            feedArray[2] = sensorDataArray[2];
-            feedArray[3] = sensorDataArray[3];
-            feedArray[4] = sensorDataArray[4];
-            feedArray[5] = sensorDataArray[5];
+            feedArray[0] = sensorDataArray[1];
+            feedArray[1] = sensorDataArray[2];
+            feedArray[2] = sensorDataArray[4];
+            feedArray[3] = sensorDataArray[6];
+            feedArray[4] = sensorDataArray[7];
+            feedArray[5] = sensorDataArray[8];
  //       }
 
         // use trained NN or loaded NN
@@ -386,7 +447,7 @@ $(document).ready(function() {
             console.log("NN1 SCORE ARRAY: " + scoreArray);
             $(".message-nn1-score").html(displayScore + '%');
             var rawLineNN1Chart = scoreArray[0].toFixed(4);
-            rawLineNN1Chart = (rawLineNN1Chart / 3) + 0.8;
+            rawLineNN1Chart = (rawLineNN1Chart / 2) + 0.8;
             lineNN1.append(timeStamp, rawLineNN1Chart);
 
         } else if (selectNN == 2) {
@@ -394,7 +455,7 @@ $(document).ready(function() {
             console.log("NN2 SCORE ARRAY: " + scoreArray);
             $(".message-nn2-score").html(displayScore + '%');
             var rawLineNN2Chart = scoreArray[0].toFixed(4);
-            rawLineNN2Chart = (rawLineNN2Chart / 3) + 0.8;
+            rawLineNN2Chart = (rawLineNN2Chart / 2) + 0.8;
             lineNN2.append(timeStamp, rawLineNN2Chart);
         }
     }
@@ -415,14 +476,14 @@ $(document).ready(function() {
 
         /**************** SET NUMBER OF NN INPUTS *************************/
      //   var numInputs = parseInt(rawNNArchitecture.charAt(0));
-        var numInputs = 3;
+        var numInputs = 6;
 
      //   nnRate = $("#rate-input").val();
         nnRate = 0.6;
       //  nnIterations = $("#iterations-input").val();
-        nnIterations = 5000;
+        nnIterations = 3000;
       //  nnError = $("#error-input").val();
-        nnError = 0.6;
+        nnError = 0.1;
 
         if (selectNN == 1) {
             trueDataArray = NN1TrueDataArray;
@@ -498,13 +559,13 @@ $(document).ready(function() {
                 inputArray[3] = currentSample[3] / 360;
                 inputArray[4] = currentSample[4] / 360;
             } else if (numInputs == 3) { */
-                inputArray[0] = (currentSample[0]);
-                inputArray[1] = (currentSample[1]);
-                inputArray[2] = (currentSample[2]);
+                inputArray[0] = (currentSample[1]);
+                inputArray[1] = (currentSample[2]);
+                inputArray[2] = (currentSample[4]);
 
-                inputArray[3] = (currentSample[3]);
-                inputArray[4] = (currentSample[4]);
-                inputArray[5] = (currentSample[5]);
+                inputArray[3] = (currentSample[6]);
+                inputArray[4] = (currentSample[7]);
+                inputArray[5] = (currentSample[8]);
 
         /*    } else if (numInputs == 2) {
                 inputArray[0] = currentSample[3] / 360;
