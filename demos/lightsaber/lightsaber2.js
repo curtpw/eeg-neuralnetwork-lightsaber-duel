@@ -666,24 +666,50 @@ var LightSaberDemo2 = (function () {
 			mat4.multiply(modelMatrix, mTranslation, modelMatrix);
 			mat4.multiply(mvpMatrix, projectionMatrix, modelMatrix);
 
-			if (mouse.buttonDown) {
-				degreesRotationZ -= mouse.deltaX;
-				degreesRotationX += mouse.deltaY;
-				mouse.deltaX = mouse.deltaY = 0;
-				degreesRotationZ = jedi2.clamp(degreesRotationZ, -360.0, +360.0);
-				degreesRotationX = jedi2.clamp(degreesRotationX, -360.0, +360.0);
-			} else {
-				if ((jedi2.WebApp2.clockMilliseconds() - mouse.lastInputTime) > autoRotateStartThreshold) {
-					// Start a default rotation after a while if no new user input is detected.
-					autoRotate = true;
-				}
-			}
+			/**************** CONTROLL WITH EEG NEURAL NETWORK ***************/
+			/**************** CONTROLL WITH EEG NEURAL NETWORK ***************/
+			/**************** CONTROLL WITH EEG NEURAL NETWORK ***************/
+			if (haveNNFlag2 && activeNNFlag2){
+				autoRotate = false;
 
-			if (autoRotate) {
-				degreesRotationX += (autoRotateAmount * deltaTimeMillisec);
-				degreesRotationZ += (autoRotateAmount * deltaTimeMillisec);
-				if (degreesRotationX >= 360.0) { degreesRotationX = 0.0; }
-				if (degreesRotationZ >= 360.0) { degreesRotationZ = 0.0; }
+                degreesRotationX = ( (sithNeural / 100) * 120) - 105;
+				degreesRotationZ = ( (sithNeural / 100) * 120) - 60;
+
+
+				degreesRotationZ = jedi.clamp(degreesRotationZ, -360.0, +360.0);
+				degreesRotationX = jedi.clamp(degreesRotationX, -360.0, +360.0);
+
+				console.log("RotX:" + degreesRotationX + " RotZ:" + degreesRotationZ);
+
+				if(sithNeural > 40){
+					glowEnabled           = true;
+					trailEnabled          = true;
+				} else {
+					glowEnabled           = false;
+					trailEnabled          = false;					
+				}
+
+			} else {
+
+				if (mouse.buttonDown) {
+					degreesRotationZ -= mouse.deltaX;
+					degreesRotationX += mouse.deltaY;
+					mouse.deltaX = mouse.deltaY = 0;
+					degreesRotationZ = jedi2.clamp(degreesRotationZ, -360.0, +360.0);
+					degreesRotationX = jedi2.clamp(degreesRotationX, -360.0, +360.0);
+				} else {
+					if ((jedi2.WebApp2.clockMilliseconds() - mouse.lastInputTime) > autoRotateStartThreshold) {
+						// Start a default rotation after a while if no new user input is detected.
+						autoRotate = true;
+					}
+				}
+
+				if (autoRotate) {
+					degreesRotationX += (autoRotateAmount * deltaTimeMillisec);
+					degreesRotationZ += (autoRotateAmount * deltaTimeMillisec);
+					if (degreesRotationX >= 360.0) { degreesRotationX = 0.0; }
+					if (degreesRotationZ >= 360.0) { degreesRotationZ = 0.0; }
+				}
 			}
 
 		//	console.log("degreesRotationX: " + degreesRotationX + " degreesRotationZ: " + degreesRotationZ); //DEBUG DEBUG

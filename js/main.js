@@ -10,6 +10,11 @@ var mindflexID = 0;
 var mindflexid1 = 999;
 var mindflexid2 = 999;
 
+var jediScore = 0;
+var sithScore = 0;
+var jediNeural = 0;
+var sithNeural = 0;
+
 
 //sensor array sample data
 var sensorDataArray = new Array(12).fill(0);
@@ -357,7 +362,14 @@ $(document).ready(function() {
                         collectData();
                     } else if (trainNNFlag1 || trainNNFlag2) {
                         //don't do anything
+                    } 
+                    if (haveNNFlag1 && activeNNFlag1){
+                        jediScore = Number(jediScore) + Number(jediNeural);
+                        jediScore = jediScore.toFixed(1);
+                        $(".score-player1").html("<span class='player-label'>&nbsp;&nbsp;&nbsp;</span>Jedi Score: <span class='player1-score'>" + jediScore + "</span>");
+                        console.log("jediNeural: " + jediNeural);
                     }
+
                 } 
 
 /**********************************************************************************************
@@ -418,7 +430,7 @@ $(document).ready(function() {
 
                             $(".gamepad-val-display.xjoystick").html("X1: <span>" + xJoystick.toFixed(5) + "</span");
             $(".gamepad-val-display.yjoystick").html("Y1: <span>" + yJoystick.toFixed(5) + "</span");
-            $(".gamepad-val-display.zjoystick").html("Z1 Joystick: <span>" + zJoystick.toFixed(5) + "</span");
+            $(".gamepad-val-display.zjoystick").html("Z1: <span>" + zJoystick.toFixed(5) + "</span");
 
             $(".gamepad-val-display.rxjoystick").html("rX1: <span>" + rxJoystick.toFixed(5) + "</span");
             $(".gamepad-val-display.ryjoystick").html("rY1: <span>" + ryJoystick.toFixed(5) + "</span");
@@ -464,6 +476,13 @@ $(document).ready(function() {
                         collectData2();
                     } else if (trainNNFlag1 || trainNNFlag2) {
                         //don't do anything
+                    }
+                    if (haveNNFlag2 && activeNNFlag2){
+                        sithScore = Number(sithScore) + Number(sithNeural);
+                        sithScore = sithScore.toFixed(1);
+                        $(".score-player2").html("<span class='player-label'>&nbsp;&nbsp;&nbsp;</span>Sith Score: <span class='player2-score'>" + sithScore + "</span>");
+
+                        console.log("sithNeural: " + sithNeural);
                     }
                 }
 
@@ -646,16 +665,21 @@ $(document).ready(function() {
             console.log("NN1 SCORE ARRAY: " + scoreArray);
             $(".message-nn1-score").html(displayScore + '%');
             var rawLineNN1Chart = scoreArray[0].toFixed(4);
-            rawLineNN1Chart = (rawLineNN1Chart / 2) + 0.8;
+            rawLineNN1Chart = (rawLineNN1Chart ) + 0.3;
             lineNN1.append(timeStamp, rawLineNN1Chart);
+
+            jediNeural = displayScore;
+
 
         } else if (selectNN == 2) {
             console.log("NN2 FEED ARRAY: " + feedArray);
             console.log("NN2 SCORE ARRAY: " + scoreArray);
             $(".message-nn2-score").html(displayScore + '%');
             var rawLineNN2Chart = scoreArray[0].toFixed(4);
-            rawLineNN2Chart = (rawLineNN2Chart / 2) + 0.8;
+            rawLineNN2Chart = (rawLineNN2Chart ) + 0.3;
             lineNN2.append(timeStamp, rawLineNN2Chart);
+
+            sithNeural = displayScore;
         }
     }
 
