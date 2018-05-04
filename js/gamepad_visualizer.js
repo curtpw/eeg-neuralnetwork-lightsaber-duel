@@ -15,14 +15,14 @@ function StandardGamepadVisualizer(pad) {
 
     this.UpdateView = function StandardGamepadVisualizer_UpdateView() {
         var pad = this.pad;
-        var containerElem = document.getElementById(this.containerElemId);
+    //    var containerElem = document.getElementById(this.containerElemId);
 
         if (pad && !this.retired) {
             if (pad.mapping === "standard") {
-                var templateStr = starndardGamepadVisualizerTemplate.replace(/gp\[#\]/g, "gp" + this.index);
-                containerElem.innerHTML = templateStr;
+           //     var templateStr = starndardGamepadVisualizerTemplate.replace(/gp\[#\]/g, "gp" + this.index);
+              //  containerElem.innerHTML = templateStr;
 
-                this.leftThumbVisualizer.setXAxisValue(pad.axes[0]);
+            /*    this.leftThumbVisualizer.setXAxisValue(pad.axes[0]);
                 this.leftThumbVisualizer.setYAxisValue(pad.axes[1]);
 
                 this.rightThumbVisualizer.setXAxisValue(pad.axes[2]);
@@ -34,14 +34,14 @@ function StandardGamepadVisualizer(pad) {
                 this.leftTriggerVisualizer.setValue(buttonLeftTrigger.value, buttonLeftTrigger.pressed);
                 this.rightTriggerVisualizer.setValue(buttonRightTrigger.value, buttonRightTrigger.pressed);
 
-                this.UpdateButtons(pad);
+                this.UpdateButtons(pad); */
 
                 UpdateGamepadStateTable(pad, pad.index);
-                containerElem.classList.remove("gpTableCellUnConnected");
+              //  containerElem.classList.remove("gpTableCellUnConnected");
             }
         } else {
         //    containerElem.innerHTML = "<div class='gpNotConnectedText'>Gamepad not connected.</div>";
-            ClearGamepadStateTableRow(this.index);
+        //    ClearGamepadStateTableRow(this.index);
         //    containerElem.classList.add("gpTableCellUnConnected");
         }
     }
@@ -102,7 +102,7 @@ function GenericGamepadVisualizer(pad) {
         }
 
 
-        console.log("****MINDFLEX ID: " + mindflexID);
+      //  console.log("****MINDFLEX ID: " + mindflexID);
 
         if(mindflexID == mindflexid1){
 
@@ -113,16 +113,6 @@ function GenericGamepadVisualizer(pad) {
             rxJoystick = (rxJoystick +  ((pad.axes[3] + 1) / 2) ) / 2;
             ryJoystick = (ryJoystick +  ((pad.axes[4] + 1) / 2) ) / 2;
             rzJoystick = (rzJoystick +  ((pad.axes[5] + 1) / 2) ) / 2;
-
-            //INJECT INTO MAIN APP
-            //INJECT INTO MAIN APP
-            $(".gamepad-val-display.xjoystick").html("X1: <span>" + xJoystick.toFixed(5) + "</span");
-            $(".gamepad-val-display.yjoystick").html("Y1: <span>" + yJoystick.toFixed(5) + "</span");
-            $(".gamepad-val-display.zjoystick").html("Z1 Joystick: <span>" + zJoystick.toFixed(5) + "</span");
-
-            $(".gamepad-val-display.rxjoystick").html("rX1: <span>" + rxJoystick.toFixed(5) + "</span");
-            $(".gamepad-val-display.ryjoystick").html("rY1: <span>" + ryJoystick.toFixed(5) + "</span");
-            $(".gamepad-val-display.rzjoystick").html("rZ1: <span>" + rzJoystick.toFixed(5) + "</span");
 
         }
 
@@ -135,16 +125,6 @@ function GenericGamepadVisualizer(pad) {
             rxJoystick2 = (rxJoystick2 +  ((pad.axes[3] + 1) / 2) ) / 2;
             ryJoystick2 = (ryJoystick2 +  ((pad.axes[4] + 1) / 2) ) / 2;
             rzJoystick2 = (rzJoystick2 +  ((pad.axes[5] + 1) / 2) ) / 2;
-
-            //INJECT INTO MAIN APP
-            //INJECT INTO MAIN APP
-            $(".gamepad-val-display.xjoystick2").html("X2: <span>" + xJoystick2.toFixed(5) + "</span");
-            $(".gamepad-val-display.yjoystick2").html("Y2: <span>" + yJoystick2.toFixed(5) + "</span");
-            $(".gamepad-val-display.zjoystick2").html("Z2: <span>" + zJoystick2.toFixed(5) + "</span");
-
-            $(".gamepad-val-display.rxjoystick2").html("rX2: <span>" + rxJoystick2.toFixed(5) + "</span");
-            $(".gamepad-val-display.ryjoystick2").html("rY2: <span>" + ryJoystick2.toFixed(5) + "</span");
-            $(".gamepad-val-display.rzjoystick2").html("rZ2: <span>" + rzJoystick2.toFixed(5) + "</span");
 
         }
 
@@ -161,7 +141,7 @@ function GenericGamepadVisualizer(pad) {
             }
         } else {
       //      containerElem.innerHTML = "<div class='gpNotConnectedText'>Gamepad not connected.</div>";
-            ClearGamepadStateTableRow(this.index);
+        //    ClearGamepadStateTableRow(this.index);
        //     containerElem.classList.add("gpTableCellUnConnected");
         }
     }
@@ -193,30 +173,30 @@ function AxisVisualizer(elemId) {
     }
 
     this.setXAxisValue = function AxisVisualizer_setXAxisValue(val) {
-        if (val < -1.0) {
+      /*  if (val < -1.0) {
             val = -1.0;
         }
         else if (val > 1.0) {
             val = 1.0;
         }
         this.XAxisValue = val;
-        this.onValueChange();
+        this.onValueChange(); */
     }
 
     this.setYAxisValue = function AxisVisualizer_setYAxisValue(val) {
-        if (val < -1.0) {
+     /*   if (val < -1.0) {
             val = -1.0;
         }
         else if (val > 1.0) {
             val = 1.0;
         }
         this.YAxisValue = val;
-        this.onValueChange();
+        this.onValueChange(); */
     }
 
     this.onValueChange = function AxisVisualizer_onValueChange() {
-        var elem = document.getElementById(this.elemId);
-        this.setElemStyles(elem);
+     //   var elem = document.getElementById(this.elemId);
+     //   this.setElemStyles(elem);
     }
 }
 

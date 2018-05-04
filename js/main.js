@@ -1,11 +1,6 @@
 
 
-
-//sensor data object
 var state = {};
-
-  
-
 
 /*******************************************************************************************************************
  *********************************************** INITIALIZE *********************************************************
@@ -18,6 +13,7 @@ var mindflexid2 = 999;
 
 //sensor array sample data
 var sensorDataArray = new Array(12).fill(0);
+var sensorDataArray2 = new Array(12).fill(0);
 
 //sensor array sample data FOR CUSTOM TRAINING
 var NN1TrueDataArray = new Array;
@@ -38,6 +34,7 @@ var sensorDataSession = [];
 var sessionSampleSetIndex = [];
 
 var getSamplesFlag = 0;
+var getSamplesFlag2 = 0;
 var getSamplesTypeFlag = 0; //0=none 1=NN1T 2=NN1F 3=NN2T 4=NN2F
 
 //do we have a trained NN to apply to live sensor data?
@@ -121,46 +118,46 @@ $(document).ready(function() {
 
     var streamingChart = new SmoothieChart({/*  grid: { strokeStyle:'rgb(125, 0, 0)', fillStyle:'rgb(60, 0, 0)', lineWidth: 1, millisPerLine: 250, verticalSections: 6, }, labels: { fillStyle:'rgb(60, 0, 0)' } */ });
 
-    streamingChart.streamTo(document.getElementById("chart-canvas"), 1200 /*delay*/ );
+    streamingChart.streamTo(document.getElementById("chart-canvas"), 900 /*delay*/ );
 
-    xJoystickLine = new TimeSeries();
+  //  xJoystickLine = new TimeSeries();
     yJoystickLine = new TimeSeries();
     zJoystickLine = new TimeSeries();
-    rxJoystickLine = new TimeSeries();
+  //  rxJoystickLine = new TimeSeries();
     ryJoystickLine = new TimeSeries();
-    rzJoystickLine = new TimeSeries();
-    zJoystickDeltaLine = new TimeSeries();  //low alpha
-    ryJoystickDeltaLine = new TimeSeries();  //low beta
+ //   rzJoystickLine = new TimeSeries();
+  //  zJoystickDeltaLine = new TimeSeries();  //low alpha
+  //  ryJoystickDeltaLine = new TimeSeries();  //low beta
 
-    xJoystickLine2 = new TimeSeries();
+ //   xJoystickLine2 = new TimeSeries();
     yJoystickLine2 = new TimeSeries();
     zJoystickLine2 = new TimeSeries();
-    rxJoystickLine2 = new TimeSeries();
+ //   rxJoystickLine2 = new TimeSeries();
     ryJoystickLine2 = new TimeSeries();
-    rzJoystickLine2 = new TimeSeries();
-    zJoystickDeltaLine2 = new TimeSeries();  //low alpha
-    ryJoystickDeltaLine2 = new TimeSeries();  //low beta
+ //   rzJoystickLine2 = new TimeSeries();
+  //  zJoystickDeltaLine2 = new TimeSeries();  //low alpha
+  //  ryJoystickDeltaLine2 = new TimeSeries();  //low beta
 
     lineNN1 = new TimeSeries();
     lineNN2 = new TimeSeries();
 
-    streamingChart.addTimeSeries(xJoystickLine,         {strokeStyle: 'rgb(47, 86, 233)', lineWidth: 3 });
+  //  streamingChart.addTimeSeries(xJoystickLine,         {strokeStyle: 'rgb(47, 86, 233)', lineWidth: 3 });
     streamingChart.addTimeSeries(yJoystickLine,         {strokeStyle: 'rgb(45, 100, 245)',   lineWidth: 3 });
     streamingChart.addTimeSeries(zJoystickLine,         {strokeStyle: 'rgb(47, 141, 255)',   lineWidth: 3 });
-    streamingChart.addTimeSeries(rxJoystickLine,        {strokeStyle: 'rgb(52, 204, 255)', lineWidth: 3 });
+ //   streamingChart.addTimeSeries(rxJoystickLine,        {strokeStyle: 'rgb(52, 204, 255)', lineWidth: 3 });
     streamingChart.addTimeSeries(ryJoystickLine,        {strokeStyle: 'rgb(23, 236, 236)', lineWidth: 3 });
-    streamingChart.addTimeSeries(rzJoystickLine,        {strokeStyle: 'rgb(168, 255, 255)', lineWidth: 3 });
-    streamingChart.addTimeSeries(zJoystickDeltaLine,    {strokeStyle: 'rgb(48, 129, 238)', lineWidth: 3 });
-    streamingChart.addTimeSeries(ryJoystickDeltaLine,   {strokeStyle: 'rgb(174, 234, 255)', lineWidth: 3 });
+//    streamingChart.addTimeSeries(rzJoystickLine,        {strokeStyle: 'rgb(168, 255, 255)', lineWidth: 3 });
+ //   streamingChart.addTimeSeries(zJoystickDeltaLine,    {strokeStyle: 'rgb(48, 129, 238)', lineWidth: 3 });
+ //   streamingChart.addTimeSeries(ryJoystickDeltaLine,   {strokeStyle: 'rgb(174, 234, 255)', lineWidth: 3 });
 
-    streamingChart.addTimeSeries(xJoystickLine2,        {strokeStyle: 'rgb(128, 0, 0)', lineWidth: 3 });
+ //   streamingChart.addTimeSeries(xJoystickLine2,        {strokeStyle: 'rgb(128, 0, 0)', lineWidth: 3 });
     streamingChart.addTimeSeries(yJoystickLine2,        {strokeStyle: 'rgb(178, 34, 34)',   lineWidth: 3 });
     streamingChart.addTimeSeries(zJoystickLine2,        {strokeStyle: 'rgb(220, 20, 60)',   lineWidth: 3 });
-    streamingChart.addTimeSeries(rxJoystickLine2,       {strokeStyle: 'rgb(255, 0, 0)', lineWidth: 3 });
+  //  streamingChart.addTimeSeries(rxJoystickLine2,       {strokeStyle: 'rgb(255, 0, 0)', lineWidth: 3 });
     streamingChart.addTimeSeries(ryJoystickLine2,       {strokeStyle: 'rgb(250, 128, 114)', lineWidth: 3 });
-    streamingChart.addTimeSeries(rzJoystickLine2,       {strokeStyle: 'rgb(240, 128, 128)', lineWidth: 3 });
-    streamingChart.addTimeSeries(zJoystickDeltaLine2,   {strokeStyle: 'rgb(128, 10, 20)', lineWidth: 3 });
-    streamingChart.addTimeSeries(ryJoystickDeltaLine2,  {strokeStyle: 'rgb(178, 40, 20)', lineWidth: 3 });
+  //  streamingChart.addTimeSeries(rzJoystickLine2,       {strokeStyle: 'rgb(240, 128, 128)', lineWidth: 3 });
+ //   streamingChart.addTimeSeries(zJoystickDeltaLine2,   {strokeStyle: 'rgb(128, 10, 20)', lineWidth: 3 });
+ //   streamingChart.addTimeSeries(ryJoystickDeltaLine2,  {strokeStyle: 'rgb(178, 40, 20)', lineWidth: 3 });
 
     streamingChart.addTimeSeries(lineNN1,   {strokeStyle: 'rgb(72, 244, 68)',   lineWidth: 4 });
     streamingChart.addTimeSeries(lineNN2,   {strokeStyle: 'rgb(244, 66, 66)',   lineWidth: 4 });
@@ -199,11 +196,9 @@ $(document).ready(function() {
         var ryJoystickElement =    document.getElementsByClassName('joystick-ry-data')[0];
         var rzJoystickElement =    document.getElementsByClassName('joystick-rz-data')[0];
 
-        var rudderJoystickElement =    document.getElementsByClassName('joystick-rudder-data')[0];
-        var throttleJoystickElement =    document.getElementsByClassName('joystick-throttle-data')[0];
-  /*      var acceleratorJoystickElement =    document.getElementsByClassName('joystick-accelerator-data')[0];
-        var brakeJoystickElement =    document.getElementsByClassName('joystick-brake-data')[0];
-        var steeringJoystickElement =    document.getElementsByClassName('joystick-steering-data')[0]; */
+    //    var rudderJoystickElement =    document.getElementsByClassName('joystick-rudder-data')[0];
+    //    var throttleJoystickElement =    document.getElementsByClassName('joystick-throttle-data')[0];
+
 
         xJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[0] * 5) ).toFixed(2);
         yJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[1] * 5) ).toFixed(2);
@@ -213,11 +208,33 @@ $(document).ready(function() {
         ryJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[4] * 5) ).toFixed(2);
         rzJoystickElement.innerHTML =      Math.pow(10, (sensorDataArray[5] * 5) ).toFixed(2);
 
-        rudderJoystickElement =      Math.pow(10, (sensorDataArray[6] * 5) ).toFixed(2);
-        throttleJoystickElement =      Math.pow(10, (sensorDataArray[7] * 5) ).toFixed(2);
-    /*    acceleratorJoystickElement =      Math.pow(10, (sensorDataArray[8] * 5) ).toFixed(2);
-        brakeJoystickElement  =      Math.pow(10, (sensorDataArray[9] * 5) ).toFixed(2);
-        steeringJoystickElement  =      Math.pow(10, (sensorDataArray[10] * 5) ).toFixed(2); */
+  //      rudderJoystickElement =      Math.pow(10, (sensorDataArray[6] * 5) ).toFixed(2);
+   //     throttleJoystickElement =      Math.pow(10, (sensorDataArray[7] * 5) ).toFixed(2);
+
+//MINDFLEX #2
+        var xJoystickElement2 =    document.getElementsByClassName('joystick-x-data2')[0];
+        var yJoystickElement2 =    document.getElementsByClassName('joystick-y-data2')[0];
+        var zJoystickElement2 =    document.getElementsByClassName('joystick-z-data2')[0];
+
+        var rxJoystickElement2 =    document.getElementsByClassName('joystick-rx-data2')[0];
+        var ryJoystickElement2 =    document.getElementsByClassName('joystick-ry-data2')[0];
+        var rzJoystickElement2 =    document.getElementsByClassName('joystick-rz-data2')[0];
+
+       // var rudderJoystickElement2 =    document.getElementsByClassName('joystick-rudder-data2')[0];
+      //  var throttleJoystickElement2 =    document.getElementsByClassName('joystick-throttle-data2')[0];
+
+
+        xJoystickElement2.innerHTML =      Math.pow(10, (sensorDataArray2[0] * 5) ).toFixed(2);
+        yJoystickElement2.innerHTML =      Math.pow(10, (sensorDataArray2[1] * 5) ).toFixed(2);
+        zJoystickElement2.innerHTML =      Math.pow(10, (sensorDataArray2[2] * 5) ).toFixed(2);
+
+        rxJoystickElement2.innerHTML =      Math.pow(10, (sensorDataArray2[3] * 5) ).toFixed(2);
+        ryJoystickElement2.innerHTML =      Math.pow(10, (sensorDataArray2[4] * 5) ).toFixed(2);
+        rzJoystickElement2.innerHTML =      Math.pow(10, (sensorDataArray2[5] * 5) ).toFixed(2);
+
+      //  rudderJoystickElement2 =      Math.pow(10, (sensorDataArray2[6] * 5) ).toFixed(2);
+      //  throttleJoystickElement2 =      Math.pow(10, (sensorDataArray2[7] * 5) ).toFixed(2);
+
     }
 
     function updateSampleCountDisplay() {
@@ -284,20 +301,20 @@ $(document).ready(function() {
                 ryJoystickChart = (ryJoystickChart / 2) + 1 * 0.1;
                 rzJoystickChart = (rzJoystickChart / 2) + 0.5 * 0.1;
 
-                zJoystickDeltaChart = (zJoystickDeltaChart / 2) + 1 * 0.1;
-                ryJoystickDeltaChart = (ryJoystickDeltaChart / 2) + 0.5 * 0.1;
+          //      zJoystickDeltaChart = (zJoystickDeltaChart / 2) + 1 * 0.1;
+          //      ryJoystickDeltaChart = (ryJoystickDeltaChart / 2) + 0.5 * 0.1;
 
 
-                xJoystickLine.append(timeStamp, xJoystickChart);
+           //     xJoystickLine.append(timeStamp, xJoystickChart);
                 yJoystickLine.append(timeStamp, yJoystickChart);
                 zJoystickLine.append(timeStamp, zJoystickChart);
 
-                rxJoystickLine.append(timeStamp, rxJoystickChart);
+            //    rxJoystickLine.append(timeStamp, rxJoystickChart);
                 ryJoystickLine.append(timeStamp, ryJoystickChart);
-                rzJoystickLine.append(timeStamp, rzJoystickChart);
+             //   rzJoystickLine.append(timeStamp, rzJoystickChart);
 
-                zJoystickDeltaLine.append(timeStamp, zJoystickDeltaChart);
-                ryJoystickDeltaLine.append(timeStamp, ryJoystickDeltaChart);
+           //     zJoystickDeltaLine.append(timeStamp, zJoystickDeltaChart);
+           //     ryJoystickDeltaLine.append(timeStamp, ryJoystickDeltaChart);
 
 
            //     rudderJoystickLine.append(timeStamp, rudderJoystickChart);
@@ -341,6 +358,113 @@ $(document).ready(function() {
                     } else if (trainNNFlag1 || trainNNFlag2) {
                         //don't do anything
                     }
+                } 
+
+/**********************************************************************************************
+********************************MINDFLEX NUMBER TWO********************************************
+**********************************************************************************************/
+                //load data into global array
+                sensorDataArray2 = new Array(12).fill(0);
+
+                sensorDataArray2[0] = xJoystick2.toFixed(5);
+                sensorDataArray2[1] = yJoystick2.toFixed(5); //theta
+                sensorDataArray2[2] = zJoystick2.toFixed(5); //low alpha
+                sensorDataArray2[3] = rxJoystick2.toFixed(5);
+                sensorDataArray2[4] = ryJoystick2.toFixed(5); //low beta
+                sensorDataArray2[5] = rzJoystick2.toFixed(5);
+
+                sensorDataArray2[6] = yJoystickDelta2.toFixed(5);  //theta
+                sensorDataArray2[7] = zJoystickDelta2.toFixed(5);  //low alpha
+                sensorDataArray2[8] = ryJoystickDelta2.toFixed(5); //low beta
+                sensorDataArray2[9] = 0;
+                sensorDataArray2[10] = 0;
+
+                sensorDataArray2[11] = timeStamp;
+
+
+                //update time series chart
+                xJoystickChart2 = ((sensorDataArray2[0] + 1) / 2);
+                yJoystickChart2 = ((sensorDataArray2[1] + 1) / 2);
+                zJoystickChart2 = ((sensorDataArray2[2] + 1) / 2);
+
+                rxJoystickChart2 = ((sensorDataArray2[3] + 1) / 2);
+                ryJoystickChart2 = ((sensorDataArray2[4] + 1) / 2);
+                rzJoystickChart2 = ((sensorDataArray2[5] + 1) / 2);
+
+            //    rudderJoystickChart = ((sensorDataArray[6] + 1) / 2);
+            //    throttleJoystickChart = ((sensorDataArray[7] + 1) / 2);
+
+
+                //sensor values in bottom 2/3 of chart , 1/10 height each
+                xJoystickChart2 = (xJoystickChart2 / 2) + 3 * 0.1;
+                yJoystickChart2 = (yJoystickChart2 / 2) + 2.5 * 0.1;
+                zJoystickChart2 = (zJoystickChart2 / 2) + 2 * 0.1;
+
+                rxJoystickChart2 = (rxJoystickChart2 / 2) + 1.5 * 0.1;
+                ryJoystickChart2 = (ryJoystickChart2 / 2) + 1 * 0.1;
+                rzJoystickChart2 = (rzJoystickChart2 / 2) + 0.5 * 0.1;
+
+          //      zJoystickDeltaChart2 = (zJoystickDeltaChart2 / 2) + 1 * 0.1;
+         //       ryJoystickDeltaChart2 = (ryJoystickDeltaChart2 / 2) + 0.5 * 0.1;
+
+
+            //    xJoystickLine2.append(timeStamp, xJoystickChart2);
+                yJoystickLine2.append(timeStamp, yJoystickChart2);
+                zJoystickLine2.append(timeStamp, zJoystickChart2);
+
+            //    rxJoystickLine2.append(timeStamp, rxJoystickChart2);
+                ryJoystickLine2.append(timeStamp, ryJoystickChart2);
+             //   rzJoystickLine2.append(timeStamp, rzJoystickChart2);
+
+                            $(".gamepad-val-display.xjoystick").html("X1: <span>" + xJoystick.toFixed(5) + "</span");
+            $(".gamepad-val-display.yjoystick").html("Y1: <span>" + yJoystick.toFixed(5) + "</span");
+            $(".gamepad-val-display.zjoystick").html("Z1 Joystick: <span>" + zJoystick.toFixed(5) + "</span");
+
+            $(".gamepad-val-display.rxjoystick").html("rX1: <span>" + rxJoystick.toFixed(5) + "</span");
+            $(".gamepad-val-display.ryjoystick").html("rY1: <span>" + ryJoystick.toFixed(5) + "</span");
+            $(".gamepad-val-display.rzjoystick").html("rZ1: <span>" + rzJoystick.toFixed(5) + "</span");
+
+
+                //have the values been updated?
+                if(xJoystick2.toFixed(3) != xJoystickOld2.toFixed(3) 
+                    && yJoystick2.toFixed(3) != yJoystickOld2.toFixed(3) 
+                    && zJoystick2.toFixed(3) != zJoystickOld2.toFixed(3)
+                    && rxJoystick2.toFixed(3) != rxJoystickOld2.toFixed(3)
+                    && ryJoystick2.toFixed(3) != ryJoystickOld2.toFixed(3)){
+
+                    xJoystickDelta2 = (xJoystickOld2 - xJoystick2 + 1) / 2 ;
+                    yJoystickDelta2 = (yJoystickOld2 - yJoystick2 + 1) / 2 ;
+                    zJoystickDelta2 = (zJoystickOld2 - zJoystick2 + 1) / 2 ;
+                    rxJoystickDelta2 = (rxJoystickOld2 - rxJoystick2 + 1) / 2 ;
+                    ryJoystickDelta2 = (ryJoystickOld2 - ryJoystick2 + 1) / 2 ;
+                    rzJoystickDelta2 = (rzJoystickOld2 - rzJoystick2 + 1) / 2 ;
+
+                    console.log("Delta2: " + yJoystickDelta2 + "  " + zJoystickDelta2 + "  " + ryJoystickDelta2);
+
+                    xJoystickOld2 = xJoystick2;
+                    yJoystickOld2 = yJoystick2;
+                    zJoystickOld2 = zJoystick2;
+
+                    rxJoystickOld2 = rxJoystick2;
+                    ryJoystickOld2 = ryJoystick2;
+                    rzJoystickOld2 = rzJoystick2;
+
+            $(".gamepad-val-display.xjoystick2").html("X2: <span>" + xJoystick2.toFixed(5) + "</span");
+            $(".gamepad-val-display.yjoystick2").html("Y2: <span>" + yJoystick2.toFixed(5) + "</span");
+            $(".gamepad-val-display.zjoystick2").html("Z2: <span>" + zJoystick2.toFixed(5) + "</span");
+
+            $(".gamepad-val-display.rxjoystick2").html("rX2: <span>" + rxJoystick2.toFixed(5) + "</span");
+            $(".gamepad-val-display.ryjoystick2").html("rY2: <span>" + ryJoystick2.toFixed(5) + "</span");
+            $(".gamepad-val-display.rzjoystick2").html("rZ2: <span>" + rzJoystick2.toFixed(5) + "</span");
+
+
+
+                    //add new values to NN training data
+                    if (getSamplesFlag2 > 0) {
+                        collectData2();
+                    } else if (trainNNFlag1 || trainNNFlag2) {
+                        //don't do anything
+                    }
                 }
 
 
@@ -363,7 +487,7 @@ $(document).ready(function() {
 
 
 
-        }, 200); // throttle 100 = 10Hz limit
+        }, 100); // throttle 100 = 10Hz limit
     
 
 
@@ -396,6 +520,37 @@ $(document).ready(function() {
 
         //countdown for data collection
         getSamplesFlag = getSamplesFlag - 1;
+    }
+
+    function collectData2() {
+        var collectedDataArray = new Array(12).fill(0); //12 device 
+        collectedDataArray = sensorDataArray2;
+
+        console.log("EEG data:");
+        console.dir(collectedDataArray);
+
+        //add sample to set
+        sensorDataSession.push(collectedDataArray);
+
+        if (getSamplesTypeFlag == 1) {
+            NN1TrueDataArray.push(collectedDataArray);
+            $('.message-nn1-true').html(NN1TrueDataArray.length);
+        } else if (getSamplesTypeFlag == 2) {
+            NN1FalseDataArray.push(collectedDataArray);
+            $('.message-nn1-false').html(NN1FalseDataArray.length);
+        } else if (getSamplesTypeFlag == 3) {
+            NN2TrueDataArray.push(collectedDataArray);
+            $('.message-nn2-true').html(NN2TrueDataArray.length);
+        } else if (getSamplesTypeFlag == 4) {
+            NN2FalseDataArray.push(collectedDataArray);
+            $('.message-nn2-false').html(NN2FalseDataArray.length);
+        }
+
+        console.log("Set Index: ");
+        console.dir(sessionSampleSetIndex);
+
+        //countdown for data collection
+        getSamplesFlag2 = getSamplesFlag2 - 1;
     }
 
 
@@ -451,22 +606,33 @@ $(document).ready(function() {
         }
 
         if ((selectNN == 1 && NN1NumInputs == 3) || (selectNN == 2 && NN2NumInputs == 3)) { */
+
+ //       }
+
+        // use trained NN or loaded NN
+        if (haveNNFlag1 && activeNNFlag1 && selectNN == 1) {
+
             feedArray[0] = sensorDataArray[1];
             feedArray[1] = sensorDataArray[2];
             feedArray[2] = sensorDataArray[4];
             feedArray[3] = sensorDataArray[6];
             feedArray[4] = sensorDataArray[7];
             feedArray[5] = sensorDataArray[8];
- //       }
 
-        // use trained NN or loaded NN
-        if (haveNNFlag1 && activeNNFlag1 && selectNN == 1) {
             scoreArray = neuralNet.activate(feedArray);
         } /*else if (loadNNFlag && selectNN == 1) {
             scoreArray = neuralNetwork1(feedArray);
         }*/
 
         if (haveNNFlag2 && activeNNFlag2 && selectNN == 2) {
+
+            feedArray[0] = sensorDataArray2[1];
+            feedArray[1] = sensorDataArray2[2];
+            feedArray[2] = sensorDataArray2[4];
+            feedArray[3] = sensorDataArray2[6];
+            feedArray[4] = sensorDataArray2[7];
+            feedArray[5] = sensorDataArray2[8];
+
             scoreArray = neuralNet2.activate(feedArray);
         } /* else if (loadNNFlag && selectNN == 2) {
             scoreArray = neuralNetwork2(feedArray);
@@ -514,7 +680,7 @@ $(document).ready(function() {
      //   nnRate = $("#rate-input").val();
         nnRate = 0.6;
       //  nnIterations = $("#iterations-input").val();
-        nnIterations = 3000;
+        nnIterations = 100;
       //  nnError = $("#error-input").val();
         nnError = 0.1;
 
@@ -585,25 +751,13 @@ $(document).ready(function() {
 
             outputArray[0] = currentSample[12]; //true or false
 
-    /*        if (numInputs == 5) {
-                inputArray[0] = (currentSample[0] + 2) / 4;
-                inputArray[1] = (currentSample[1] + 2) / 4;
-                inputArray[2] = (currentSample[2] + 2) / 4;
-                inputArray[3] = currentSample[3] / 360;
-                inputArray[4] = currentSample[4] / 360;
-            } else if (numInputs == 3) { */
-                inputArray[0] = (currentSample[1]);
-                inputArray[1] = (currentSample[2]);
-                inputArray[2] = (currentSample[4]);
+            inputArray[0] = (currentSample[1]);
+            inputArray[1] = (currentSample[2]);
+            inputArray[2] = (currentSample[4]);
 
-                inputArray[3] = (currentSample[6]);
-                inputArray[4] = (currentSample[7]);
-                inputArray[5] = (currentSample[8]);
-
-        /*    } else if (numInputs == 2) {
-                inputArray[0] = currentSample[3] / 360;
-                inputArray[1] = currentSample[4] / 360;
-            } */
+            inputArray[3] = (currentSample[6]);
+            inputArray[4] = (currentSample[7]);
+            inputArray[5] = (currentSample[8]);
 
             trainingData.push({
                 input: inputArray,
@@ -708,7 +862,7 @@ $(document).ready(function() {
         //how many samples for this set?
         /************** CONTROL NUMBER OF SAMPLES COLLECTED **********/
        // getSamplesFlag = $('input.sample-size').val();
-       getSamplesFlag = 20;
+       getSamplesFlag = 50;
         getSamplesTypeFlag = 1;
         console.log("Collect btn NN1T #samples flag: " + getSamplesFlag);
     });
@@ -718,7 +872,7 @@ $(document).ready(function() {
              /************** CONTROL NUMBER OF SAMPLES COLLECTED **********/
         //this flag is applied in the bluetooth data notification function
       //  getSamplesFlag = $('input.sample-size').val();
-      getSamplesFlag = 20;
+      getSamplesFlag = 50;
         getSamplesTypeFlag = 2;
         console.log("Collect btn NN1F #samples flag: " + getSamplesFlag);
     });
@@ -727,7 +881,7 @@ $(document).ready(function() {
         //how many samples for this set?
          /************** CONTROL NUMBER OF SAMPLES COLLECTED **********/
       //  getSamplesFlag = $('input.sample-size').val();
-      getSamplesFlag = 20;
+      getSamplesFlag2 = 50;
         //this flag is applied in the bluetooth data notification function
         getSamplesTypeFlag = 3;
         console.log("Collect btn NN2T #samples flag: " + getSamplesFlag);
@@ -737,7 +891,7 @@ $(document).ready(function() {
         //how many samples for this set?
          /************** CONTROL NUMBER OF SAMPLES COLLECTED **********/
      //   getSamplesFlag = $('input.sample-size').val();
-     getSamplesFlag = 20;
+     getSamplesFlag2 = 50;
         //this flag is applied in the bluetooth data notification function
         getSamplesTypeFlag = 4;
         console.log("Collect btn NN2F #samples flag: " + getSamplesFlag);

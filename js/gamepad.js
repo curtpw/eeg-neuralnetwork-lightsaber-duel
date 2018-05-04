@@ -104,6 +104,6 @@ function UpdateGamepadStateTable(gamepad, index) {
 }
 
 function ClearGamepadStateTableRow(index) {
-    var containerElem = document.getElementById("gpStateTableRow" + index);
-    containerElem.innerHTML = "";
+ //   var containerElem = document.getElementById("gpStateTableRow" + index);
+ //   containerElem.innerHTML = "";
 }
