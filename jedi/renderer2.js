@@ -91,6 +91,9 @@ jedi2.Renderer = (function () {
 		jedi2.assert(screenWidth  > 0);
 		jedi2.assert(screenHeight > 0);
 
+		//MAKE SQUARE
+screenHeight = screenHeight * 1.4;
+
 		gl.viewport(0, 0, screenWidth / pixelRatio, screenHeight / pixelRatio);
 		gl.clearColor(defaultClearColor[0], defaultClearColor[1], defaultClearColor[2], defaultClearColor[3]);
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);

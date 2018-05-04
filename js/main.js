@@ -125,42 +125,42 @@ $(document).ready(function() {
 
     streamingChart.streamTo(document.getElementById("chart-canvas"), 900 /*delay*/ );
 
-  //  xJoystickLine = new TimeSeries();
+    xJoystickLine = new TimeSeries();
     yJoystickLine = new TimeSeries();
     zJoystickLine = new TimeSeries();
-  //  rxJoystickLine = new TimeSeries();
+    rxJoystickLine = new TimeSeries();
     ryJoystickLine = new TimeSeries();
- //   rzJoystickLine = new TimeSeries();
+    rzJoystickLine = new TimeSeries();
   //  zJoystickDeltaLine = new TimeSeries();  //low alpha
   //  ryJoystickDeltaLine = new TimeSeries();  //low beta
 
- //   xJoystickLine2 = new TimeSeries();
+    xJoystickLine2 = new TimeSeries();
     yJoystickLine2 = new TimeSeries();
     zJoystickLine2 = new TimeSeries();
- //   rxJoystickLine2 = new TimeSeries();
+    rxJoystickLine2 = new TimeSeries();
     ryJoystickLine2 = new TimeSeries();
- //   rzJoystickLine2 = new TimeSeries();
+    rzJoystickLine2 = new TimeSeries();
   //  zJoystickDeltaLine2 = new TimeSeries();  //low alpha
   //  ryJoystickDeltaLine2 = new TimeSeries();  //low beta
 
     lineNN1 = new TimeSeries();
     lineNN2 = new TimeSeries();
 
-  //  streamingChart.addTimeSeries(xJoystickLine,         {strokeStyle: 'rgb(47, 86, 233)', lineWidth: 3 });
+    streamingChart.addTimeSeries(xJoystickLine,         {strokeStyle: 'rgb(47, 86, 233)', lineWidth: 3 });
     streamingChart.addTimeSeries(yJoystickLine,         {strokeStyle: 'rgb(45, 100, 245)',   lineWidth: 3 });
     streamingChart.addTimeSeries(zJoystickLine,         {strokeStyle: 'rgb(47, 141, 255)',   lineWidth: 3 });
- //   streamingChart.addTimeSeries(rxJoystickLine,        {strokeStyle: 'rgb(52, 204, 255)', lineWidth: 3 });
+    streamingChart.addTimeSeries(rxJoystickLine,        {strokeStyle: 'rgb(52, 204, 255)', lineWidth: 3 });
     streamingChart.addTimeSeries(ryJoystickLine,        {strokeStyle: 'rgb(23, 236, 236)', lineWidth: 3 });
-//    streamingChart.addTimeSeries(rzJoystickLine,        {strokeStyle: 'rgb(168, 255, 255)', lineWidth: 3 });
+    streamingChart.addTimeSeries(rzJoystickLine,        {strokeStyle: 'rgb(168, 255, 255)', lineWidth: 3 });
  //   streamingChart.addTimeSeries(zJoystickDeltaLine,    {strokeStyle: 'rgb(48, 129, 238)', lineWidth: 3 });
  //   streamingChart.addTimeSeries(ryJoystickDeltaLine,   {strokeStyle: 'rgb(174, 234, 255)', lineWidth: 3 });
 
- //   streamingChart.addTimeSeries(xJoystickLine2,        {strokeStyle: 'rgb(128, 0, 0)', lineWidth: 3 });
+    streamingChart.addTimeSeries(xJoystickLine2,        {strokeStyle: 'rgb(128, 0, 0)', lineWidth: 3 });
     streamingChart.addTimeSeries(yJoystickLine2,        {strokeStyle: 'rgb(178, 34, 34)',   lineWidth: 3 });
     streamingChart.addTimeSeries(zJoystickLine2,        {strokeStyle: 'rgb(220, 20, 60)',   lineWidth: 3 });
-  //  streamingChart.addTimeSeries(rxJoystickLine2,       {strokeStyle: 'rgb(255, 0, 0)', lineWidth: 3 });
+    streamingChart.addTimeSeries(rxJoystickLine2,       {strokeStyle: 'rgb(255, 0, 0)', lineWidth: 3 });
     streamingChart.addTimeSeries(ryJoystickLine2,       {strokeStyle: 'rgb(250, 128, 114)', lineWidth: 3 });
-  //  streamingChart.addTimeSeries(rzJoystickLine2,       {strokeStyle: 'rgb(240, 128, 128)', lineWidth: 3 });
+    streamingChart.addTimeSeries(rzJoystickLine2,       {strokeStyle: 'rgb(240, 128, 128)', lineWidth: 3 });
  //   streamingChart.addTimeSeries(zJoystickDeltaLine2,   {strokeStyle: 'rgb(128, 10, 20)', lineWidth: 3 });
  //   streamingChart.addTimeSeries(ryJoystickDeltaLine2,  {strokeStyle: 'rgb(178, 40, 20)', lineWidth: 3 });
 
@@ -303,20 +303,20 @@ $(document).ready(function() {
                 zJoystickChart = (zJoystickChart / 2) + 2 * 0.1;
 
                 rxJoystickChart = (rxJoystickChart / 2) + 1.5 * 0.1;
-                ryJoystickChart = (ryJoystickChart / 2) + 1 * 0.1;
+                ryJoystickChart = (ryJoystickChart / 2) + 1.0 * 0.1;
                 rzJoystickChart = (rzJoystickChart / 2) + 0.5 * 0.1;
 
           //      zJoystickDeltaChart = (zJoystickDeltaChart / 2) + 1 * 0.1;
           //      ryJoystickDeltaChart = (ryJoystickDeltaChart / 2) + 0.5 * 0.1;
 
 
-           //     xJoystickLine.append(timeStamp, xJoystickChart);
+                xJoystickLine.append(timeStamp, xJoystickChart);
                 yJoystickLine.append(timeStamp, yJoystickChart);
                 zJoystickLine.append(timeStamp, zJoystickChart);
 
-            //    rxJoystickLine.append(timeStamp, rxJoystickChart);
+                rxJoystickLine.append(timeStamp, rxJoystickChart);
                 ryJoystickLine.append(timeStamp, ryJoystickChart);
-             //   rzJoystickLine.append(timeStamp, rzJoystickChart);
+                rzJoystickLine.append(timeStamp, rzJoystickChart);
 
            //     zJoystickDeltaLine.append(timeStamp, zJoystickDeltaChart);
            //     ryJoystickDeltaLine.append(timeStamp, ryJoystickDeltaChart);
@@ -408,25 +408,25 @@ $(document).ready(function() {
 
 
                 //sensor values in bottom 2/3 of chart , 1/10 height each
-                xJoystickChart2 = (xJoystickChart2 / 2) + 3 * 0.1;
-                yJoystickChart2 = (yJoystickChart2 / 2) + 2.5 * 0.1;
-                zJoystickChart2 = (zJoystickChart2 / 2) + 2 * 0.1;
+                xJoystickChart2 = (xJoystickChart2 / 2) + 8 * 0.1;
+                yJoystickChart2 = (yJoystickChart2 / 2) + 7.5 * 0.1;
+                zJoystickChart2 = (zJoystickChart2 / 2) + 7 * 0.1;
 
-                rxJoystickChart2 = (rxJoystickChart2 / 2) + 1.5 * 0.1;
-                ryJoystickChart2 = (ryJoystickChart2 / 2) + 1 * 0.1;
-                rzJoystickChart2 = (rzJoystickChart2 / 2) + 0.5 * 0.1;
+                rxJoystickChart2 = (rxJoystickChart2 / 2) + 6.5 * 0.1;
+                ryJoystickChart2 = (ryJoystickChart2 / 2) + 6 * 0.1;
+                rzJoystickChart2 = (rzJoystickChart2 / 2) + 5.5 * 0.1;
 
           //      zJoystickDeltaChart2 = (zJoystickDeltaChart2 / 2) + 1 * 0.1;
          //       ryJoystickDeltaChart2 = (ryJoystickDeltaChart2 / 2) + 0.5 * 0.1;
 
 
-            //    xJoystickLine2.append(timeStamp, xJoystickChart2);
+                xJoystickLine2.append(timeStamp, xJoystickChart2);
                 yJoystickLine2.append(timeStamp, yJoystickChart2);
                 zJoystickLine2.append(timeStamp, zJoystickChart2);
 
-            //    rxJoystickLine2.append(timeStamp, rxJoystickChart2);
+                rxJoystickLine2.append(timeStamp, rxJoystickChart2);
                 ryJoystickLine2.append(timeStamp, ryJoystickChart2);
-             //   rzJoystickLine2.append(timeStamp, rzJoystickChart2);
+                rzJoystickLine2.append(timeStamp, rzJoystickChart2);
 
                             $(".gamepad-val-display.xjoystick").html("X1: <span>" + xJoystick.toFixed(5) + "</span");
             $(".gamepad-val-display.yjoystick").html("Y1: <span>" + yJoystick.toFixed(5) + "</span");
